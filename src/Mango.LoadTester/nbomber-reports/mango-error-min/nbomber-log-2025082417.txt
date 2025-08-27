@@ -1,0 +1,19 @@
+2025-08-24 17:49:15.992 +02:00 [INF] [ThreadId:1] NBomber 6.1.1 started a new session: 2025-08-24_15.49.85_session_99ed79e0
+2025-08-24 17:49:16.089 +02:00 [INF] [ThreadId:1] NBomber started as single node
+2025-08-24 17:49:16.108 +02:00 [INF] [ThreadId:1] License validation....
+2025-08-24 17:49:16.110 +02:00 [WRN] [ThreadId:1] THIS VERSION IS FREE ONLY FOR PERSONAL USE. You can't use it for an organization.
+2025-08-24 17:49:16.177 +02:00 [INF] [ThreadId:1] Reports folder: C:\Users\pabloff\source\repos\Mango.Http\src\Mango.LoadTester\bin\Release\net8.0\./nbomber-reports/mango-error-min
+2025-08-24 17:49:16.180 +02:00 [INF] [ThreadId:1] Plugins: no plugins were loaded
+2025-08-24 17:49:16.183 +02:00 [INF] [ThreadId:1] Reporting sinks: no reporting sinks were loaded
+2025-08-24 17:49:16.183 +02:00 [INF] [ThreadId:1] Starting init...
+2025-08-24 17:49:16.200 +02:00 [INF] [ThreadId:1] Target scenarios: mango-error-min
+2025-08-24 17:49:16.202 +02:00 [INF] [ThreadId:1] Start init scenario: mango-error-min
+2025-08-24 17:49:16.472 +02:00 [INF] [ThreadId:10] Init finished
+2025-08-24 17:49:16.539 +02:00 [INF] [ThreadId:10] Starting warm up...
+2025-08-24 17:49:16.544 +02:00 [INF] [ThreadId:10] Warm up for scenarios: mango-error-min
+2025-08-24 17:49:16.590 +02:00 [INF] [ThreadId:10] Warm up duration: 00:00:05
+2025-08-24 17:49:22.652 +02:00 [INF] [ThreadId:26] Starting bombing...
+2025-08-24 17:49:56.706 +02:00 [INF] [ThreadId:37] Stopping scenarios...
+2025-08-24 17:49:56.709 +02:00 [INF] [ThreadId:37] Calculating final statistics...
+2025-08-24 17:49:57.264 +02:00 [INF] [ThreadId:62] Reports saved in folder: C:\Users\pabloff\source\repos\Mango.Http\src\Mango.LoadTester\nbomber-reports\mango-error-min
+2025-08-24 17:49:57.265 +02:00 [WRN] [ThreadId:62] THIS VERSION IS FREE ONLY FOR PERSONAL USE. You can't use it for an organization.

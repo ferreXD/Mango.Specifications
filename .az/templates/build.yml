@@ -1,0 +1,21 @@
+parameters:
+  - name: dotnetVersion
+    type: string
+  - name: solution
+    type: string
+
+jobs:
+- job: Build
+  displayName: 'Build solution'
+  steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '${{ parameters.dotnetVersion }}'
+    - script: dotnet restore "${{ parameters.solution }}"
+      displayName: 'dotnet restore'
+    - script: dotnet build "${{ parameters.solution }}" --configuration Release --no-restore
+      displayName: 'dotnet build (Release)'
+    - publish: '$(Build.SourcesDirectory)'
+      artifact: sources
+      displayName: 'Publish sources as artifact'

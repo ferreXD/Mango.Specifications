@@ -1,0 +1,25 @@
+parameters:
+  - name: feed
+    type: string
+  - name: nugetApiKey
+    type: string
+  - name: artifactName
+    type: string
+
+jobs:
+- job: Publish
+  displayName: 'Publish NuGet packages'
+  steps:
+    - download: current
+      artifact: '${{ parameters.artifactName }}'
+    - task: NuGetAuthenticate@1
+      displayName: 'Authenticate to feed'
+      inputs:
+        feedList: '${{ parameters.feed }}'
+    - script: dotnet nuget push "$(Pipeline.Workspace)/${{ parameters.artifactName }}/*.nupkg" \
+        --source '${{ parameters.feed }}' \
+        --skip-duplicate \
+        --api-key "$(NUGET_API_KEY)"
+      env:
+        NUGET_API_KEY: '${{ parameters.nugetApiKey }}'
+      displayName: 'dotnet nuget push'

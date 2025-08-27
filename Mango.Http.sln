@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D13EDDE5-B76A-415C-9076-0AA5391E40B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D97228B0-E5CE-47A4-856B-443F15DAA826}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies.props = dependencies.props
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Http", "src\Mango.Http\Mango.Http.csproj", "{662F1DA2-1EDF-479A-A2F6-11E2E7B70532}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{581B18A5-8B03-49F6-98F5-F5782D7D27BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Http.UnitTests", "tests\Mango.Http.UnitTests\Mango.Http.UnitTests.csproj", "{93CF4AA2-2F8B-471F-B395-FC7383DD869C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Http.IntegrationTests", "tests\Mango.Http.IntegrationTests\Mango.Http.IntegrationTests.csproj", "{97B62AD4-6ACF-403A-AEEB-D748790C9083}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".az", ".az", "{4C1BE7E7-F6B4-4B36-810D-3F3BA737773A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{F72C599E-B67E-486C-BFD5-EB9CCA2455F0}"
+	ProjectSection(SolutionItems) = preProject
+		.az\templates\build.yml = .az\templates\build.yml
+		.az\templates\pack.yml = .az\templates\pack.yml
+		.az\templates\publish.yml = .az\templates\publish.yml
+		.az\templates\test.yml = .az\templates\test.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "orchestrators", "orchestrators", "{590FCDF9-BC9D-4FA9-BC66-B69F8AB0DD84}"
+	ProjectSection(SolutionItems) = preProject
+		.az\orchestrators\nuget-upload-orchestrator.yml = .az\orchestrators\nuget-upload-orchestrator.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Http.LoadTester", "src\Mango.LoadTester\Mango.Http.LoadTester.csproj", "{CD9B7D07-22ED-E3BB-BCE8-3E2CAF455008}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{662F1DA2-1EDF-479A-A2F6-11E2E7B70532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{662F1DA2-1EDF-479A-A2F6-11E2E7B70532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{662F1DA2-1EDF-479A-A2F6-11E2E7B70532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{662F1DA2-1EDF-479A-A2F6-11E2E7B70532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93CF4AA2-2F8B-471F-B395-FC7383DD869C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93CF4AA2-2F8B-471F-B395-FC7383DD869C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93CF4AA2-2F8B-471F-B395-FC7383DD869C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93CF4AA2-2F8B-471F-B395-FC7383DD869C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97B62AD4-6ACF-403A-AEEB-D748790C9083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97B62AD4-6ACF-403A-AEEB-D748790C9083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97B62AD4-6ACF-403A-AEEB-D748790C9083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97B62AD4-6ACF-403A-AEEB-D748790C9083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD9B7D07-22ED-E3BB-BCE8-3E2CAF455008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9B7D07-22ED-E3BB-BCE8-3E2CAF455008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9B7D07-22ED-E3BB-BCE8-3E2CAF455008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9B7D07-22ED-E3BB-BCE8-3E2CAF455008}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{662F1DA2-1EDF-479A-A2F6-11E2E7B70532} = {D13EDDE5-B76A-415C-9076-0AA5391E40B4}
+		{93CF4AA2-2F8B-471F-B395-FC7383DD869C} = {581B18A5-8B03-49F6-98F5-F5782D7D27BF}
+		{97B62AD4-6ACF-403A-AEEB-D748790C9083} = {581B18A5-8B03-49F6-98F5-F5782D7D27BF}
+		{4C1BE7E7-F6B4-4B36-810D-3F3BA737773A} = {D97228B0-E5CE-47A4-856B-443F15DAA826}
+		{F72C599E-B67E-486C-BFD5-EB9CCA2455F0} = {4C1BE7E7-F6B4-4B36-810D-3F3BA737773A}
+		{590FCDF9-BC9D-4FA9-BC66-B69F8AB0DD84} = {4C1BE7E7-F6B4-4B36-810D-3F3BA737773A}
+		{CD9B7D07-22ED-E3BB-BCE8-3E2CAF455008} = {D13EDDE5-B76A-415C-9076-0AA5391E40B4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA334290-18FA-408D-9EE6-D735479B01D8}
+	EndGlobalSection
+EndGlobal
