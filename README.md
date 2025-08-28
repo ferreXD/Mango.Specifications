@@ -1,7 +1,7 @@
-﻿# Ferreimavi.EntityFrameworkCore.Auditing
+﻿# Specification
 
 ## Overview
-This repository contains the .NET solution **Ferreimavi.EntityFrameworkCore.Auditing**.
+This repository contains the .NET solution **Specification**.
 
 ## Project Structure
 - **.az/** - CI / CD pipelines.

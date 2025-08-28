@@ -1,0 +1,15 @@
+parameters:
+  - name: output
+    type: string
+    default: '$(Build.ArtifactStagingDirectory)/nuget'
+  - name: feed
+    type: string
+    default: ''
+
+steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'push'
+      packagesToPush: '${{ parameters.output }}/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: ${{ parameters.feed }}

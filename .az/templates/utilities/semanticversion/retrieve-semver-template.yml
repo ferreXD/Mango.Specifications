@@ -1,0 +1,34 @@
+---
+# This pipeline calculates the semantic version of the repository using GitVersion.
+# It first checks out the repository, ensuring full Git history is available.
+# Then, it sets up GitVersion and executes it to determine the current version based on the commit history and tags.
+# The version is calculated following semantic versioning rules (MAJOR.MINOR.PATCH) and can be used in subsequent pipeline steps.
+
+steps:
+  # Step 1: Check out the repository containing the source code.
+  # - Ensures the pipeline has access to the project's full Git history and files.
+  # - "fetchDepth: 0" fetches the entire Git commit history, which is essential for tools like GitVersion
+  #   that calculate semantic versions based on commit metadata and tags.
+  - checkout: self
+    fetchDepth: 0
+
+  # Step 2: Set up GitVersion for semantic versioning.
+  # - GitVersion analyzes the Git commit history and adheres to semantic versioning rules (e.g., MAJOR.MINOR.PATCH).
+  # - "versionSpec: '6.0.x'" specifies the GitVersion version range (major version 6, latest compatible patch version).
+  # - "preferLatestVersion: true" ensures the most recent and stable patch release is installed, reducing potential bugs.
+  - task: gitversion/setup@3
+    inputs:
+      versionSpec: '6.0.x'
+      preferLatestVersion: true
+
+  # Step 3: Execute GitVersion to calculate the semantic version of the repository.
+  # - Uses the repository's Git commit history and tags to determine the current semantic version.
+  # - "displayName" adds a human-readable label for this step, making pipeline logs easier to understand.
+  # - "name: version_step" assigns a unique identifier for this step, allowing its outputs to be referenced later in the pipeline.
+  # - "overrideConfig: 'update-build-number=false'" prevents GitVersion from automatically updating the Azure DevOps build number.
+  #   This gives you full control over where and how the calculated version is used in subsequent pipeline steps.
+  - task: gitversion/execute@3
+    displayName: Determine Version
+    name: version_step
+    inputs:
+      overrideConfig: 'update-build-number=false'

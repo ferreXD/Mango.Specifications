@@ -1,0 +1,31 @@
+parameters:
+  - name: project
+    type: string
+    default: '*'
+  - name: configuration
+    type: string
+    default: '$(BuildConfiguration)'
+  - name: output
+    type: string
+    default: '$(Build.ArtifactStagingDirectory)/nuget'
+  - name: major
+    type: string
+    default: '1'
+  - name: minor
+    type: string
+    default: '0'
+  - name: patch
+    type: string
+    default: '0'
+
+steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+        command: 'pack'
+        packagesToPack: '**/${{ parameters.project }}.csproj'
+        configuration: ${{ parameters.configuration }}
+        packDirectory: ${{ parameters.output }}
+        majorVersion: ${{ parameters.major }}
+        minorVersion: ${{ parameters.minor }}
+        patchVersion: ${{ parameters.patch }}
+        verbosityPack: 'Detailed'

@@ -1,0 +1,42 @@
+parameters:
+  - name: runTitle
+    displayName: 'Test run title'  # Title for the test run (used in reporting).
+    type: string
+    default: 'Test Run'
+  - name: projects
+    displayName: 'Test projects'  # The pattern to locate test projects.
+    type: string
+    default: '**/*.Tests.csproj'
+
+steps:
+    # Step to execute the test projects with Cobertura-specific arguments.
+    - task: DotNetCoreCLI@2
+      displayName: 'Test Projects'  # Executes tests and collects code coverage.
+      inputs:
+        command: 'test'  # Runs the test command.
+        projects: '${{ parameters.projects }}'  # Specifies the test projects to execute.
+        arguments: '--configuration release --collect:"XPlat Code Coverage"'  # Adds Cobertura-specific arguments.
+        publishTestResults: true  # Publishes the test results.
+
+    # Step to install the ReportGenerator tool for generating Cobertura reports.
+    - task: PowerShell@2
+      displayName: 'Install ReportGenerator Code Coverage Tool'
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet tool install --tool-path $(Agent.TempDirectory)/tools dotnet-reportgenerator-globaltool
+
+    # Step to execute the ReportGenerator tool and generate Cobertura reports.
+    - task: PowerShell@2
+      displayName: 'Execute ReportGenerator Code Coverage Command'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $(Agent.TempDirectory)/tools/reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura"
+
+    # Step to publish the Cobertura code coverage results.
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish Code Coverage Results'
+      inputs:
+        codeCoverageTool: 'Cobertura'  # Specifies Cobertura as the coverage tool.
+        summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/${{ parameters.runTitle }}.xml'  # Location of the generated report.

@@ -1,0 +1,59 @@
+pool: 'Ferreimavi Agent Pool'
+
+
+trigger:
+  branches:
+    include:
+        - main
+
+variables:
+  - group: nuget-feed-variables
+  - name: nugetFeed
+    value: $(feed)
+
+jobs:
+  - job: versioning
+    displayName: Versioning
+    steps:
+      - template: ../../templates/utilities/semanticversion/retrieve-semver-template.yml
+
+  - job: unit_testing
+    displayName: Unit Test
+    dependsOn: versioning
+    condition: succeeded()
+    steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'restore'
+          projects: '**/*.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: './'
+          verbosityRestore: 'Detailed'
+      - template: ../../templates/ci/tests/test-template.yml
+    
+  - job: upload_packages
+    displayName: Upload Packages
+    dependsOn:
+      - unit_testing
+      - versioning
+    condition: succeeded()
+    variables:
+      major: $[ dependencies.versioning.outputs['version_step.Major'] ]
+      minor: $[ dependencies.versioning.outputs['version_step.Minor'] ]
+      patch: $[ dependencies.versioning.outputs['version_step.Patch'] ]
+    steps:
+      - template: ../../templates/cd/nuget/nuget-pack-template.yml
+        parameters:
+          project: 'Ferreimavi.Specification'
+          major: '$(major)'
+          minor: '$(minor)'
+          patch: '$(patch)'
+      - template: ../../templates/cd/nuget/nuget-pack-template.yml
+        parameters:
+          project: 'Ferreimavi.Specification.EntityFrameworkCore'
+          major: '$(major)'
+          minor: '$(minor)'
+          patch: '$(patch)'
+      - template: ../../templates/cd/nuget/nuget-upload-template.yml
+        parameters:
+          feed: '$(nugetFeed)'

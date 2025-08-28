@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D310C147-357A-48DE-8014-90B833176823}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		dependencies.props = dependencies.props
+		Directory.Build.props = Directory.Build.props
+		GitVersion.yml = GitVersion.yml
+		Nuget.config = Nuget.config
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CAFE8694-753B-4FBA-AD3D-2A0827450119}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specification", "Specification", "{D5A0024B-25D8-4FF2-8E2D-46812BD5D174}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Specifications", "src\Specification\Ferreimavi.Specification\Mango.Specifications.csproj", "{868AC4FF-BC90-4354-8A54-97C2514A79E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFrameworkCore", "EntityFrameworkCore", "{9D62FE1A-F2EC-41EF-8242-A962B6C26E70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Specifications.EntityFrameworkCore.Tests", "src\Specification.EntityFrameworkCore\Ferreimavi.Specification.EntityFrameworkCore.Tests\Mango.Specifications.EntityFrameworkCore.Tests.csproj", "{AE9FF139-BDE0-4DA6-8F1B-9B0A11545162}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Specifications.Tests", "src\Specification\Ferreimavi.Specification.Tests\Mango.Specifications.Tests.csproj", "{2C606CE4-9193-47CE-86E2-249189F959D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Specifications.EntityFrameworkCore", "src\Specification.EntityFrameworkCore\Ferreimavi.Specification.EntityFrameworkCore\Mango.Specifications.EntityFrameworkCore.csproj", "{148B5719-48A1-47B5-8D0D-E5DEE08ACBB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{868AC4FF-BC90-4354-8A54-97C2514A79E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{868AC4FF-BC90-4354-8A54-97C2514A79E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{868AC4FF-BC90-4354-8A54-97C2514A79E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{868AC4FF-BC90-4354-8A54-97C2514A79E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE9FF139-BDE0-4DA6-8F1B-9B0A11545162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE9FF139-BDE0-4DA6-8F1B-9B0A11545162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE9FF139-BDE0-4DA6-8F1B-9B0A11545162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE9FF139-BDE0-4DA6-8F1B-9B0A11545162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C606CE4-9193-47CE-86E2-249189F959D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C606CE4-9193-47CE-86E2-249189F959D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C606CE4-9193-47CE-86E2-249189F959D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C606CE4-9193-47CE-86E2-249189F959D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148B5719-48A1-47B5-8D0D-E5DEE08ACBB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148B5719-48A1-47B5-8D0D-E5DEE08ACBB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148B5719-48A1-47B5-8D0D-E5DEE08ACBB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148B5719-48A1-47B5-8D0D-E5DEE08ACBB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5A0024B-25D8-4FF2-8E2D-46812BD5D174} = {CAFE8694-753B-4FBA-AD3D-2A0827450119}
+		{868AC4FF-BC90-4354-8A54-97C2514A79E3} = {D5A0024B-25D8-4FF2-8E2D-46812BD5D174}
+		{9D62FE1A-F2EC-41EF-8242-A962B6C26E70} = {CAFE8694-753B-4FBA-AD3D-2A0827450119}
+		{AE9FF139-BDE0-4DA6-8F1B-9B0A11545162} = {9D62FE1A-F2EC-41EF-8242-A962B6C26E70}
+		{2C606CE4-9193-47CE-86E2-249189F959D2} = {D5A0024B-25D8-4FF2-8E2D-46812BD5D174}
+		{148B5719-48A1-47B5-8D0D-E5DEE08ACBB3} = {9D62FE1A-F2EC-41EF-8242-A962B6C26E70}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8942AB3-25CE-4332-808B-A57AA1C76CA1}
+	EndGlobalSection
+EndGlobal
