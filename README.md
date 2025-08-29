@@ -3,6 +3,7 @@
 > **Specification++ for .NET/EF Core** — parentheses-aware composition (`And/Or/Not` with groups), **policy-driven merges** (ordering/pagination/projection), and **first-class GroupBy**. In-memory and EF Core parity.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/ferreXD/Mango.Specifications.svg)](./)
 
 > **Status:** WIP (pre-v1). API surface may change. Targeting `v1.0.0` after docs polish & EF ergonomics.
 
@@ -256,3 +257,4 @@ PRs welcome. Keep PRs focused and covered by tests. For bigger API changes, open
 
 - MIT — see [LICENSE](LICENSE).
 - Credits: Heavily inspired by Ardalis.Specification (MIT). Portions may conceptually derive from that work.
+
