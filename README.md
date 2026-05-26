@@ -2,6 +2,7 @@
 
 > **Specification++ for .NET/EF Core** — parentheses-aware composition (`And/Or/Not` with groups), **policy-driven merges** (ordering/pagination/projection), and **first-class GroupBy**. In-memory and EF Core parity.
 
+[![CI](https://github.com/ferreXD/Mango.Specifications/actions/workflows/ci.yml/badge.svg)](https://github.com/ferreXD/Mango.Specifications/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/ferreXD/Mango.Specifications.svg)](./)
 
@@ -12,7 +13,7 @@
 ## Table of Contents
 
 - [About](#about)
-- [What’s New](#whats-new)
+- [What's New](#whats-new)
 - [Features](#features)
 - [Install](#install)
 - [Quickstart](#quickstart)
@@ -41,11 +42,11 @@ Heavily inspired by **Ardalis.Specification**, extended with composition policie
 
 ---
 
-## What’s New
+## What's New
 
 > **Pre-release summary** (update per tag)
 
-- Composition API: `AsComposable()`, `OpenGroup/CloseGroup`, `ReturnRoot`, `.Build()`.
+- Composition API: `AsComposable()`, `OpenGroup/CloseGroup`, `.Build()`.
 - Merge policies: `OrderingEvaluationPolicy`, `PaginationEvaluationPolicy`, `ProjectionEvaluationPolicy`.
 - Grouping: `GroupingSpecification<T,TKey,TResult>` with result selectors and parity evaluators.
 - EF adapter: `DbSetExtensions.WithSpecification(...)`, evaluator pipeline, includes, tracking.
@@ -126,7 +127,6 @@ var composed = byCustomer.AsComposable()
     .CloseGroup()                             // )
     .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.BothLeftPriority)
     .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.ThrowOnConflict)
-    .ReturnRoot()
     .Build();
 
 var result = await db.Orders.WithSpecification(composed).ToListAsync(ct);
@@ -202,27 +202,31 @@ var mem = spec.Evaluate(inMemoryOrders).ToList();
 // Assert parity in tests (shape + count + key order)
 ```
 
-> If parity breaks, you’re likely using an EF-only construct — move it behind a projection or adjust the expression.
+> If parity breaks, you're likely using an EF-only construct — move it behind a projection or adjust the expression.
 
 ---
 
 ## Building
 
 ``` bash 
-git clone https://github.com/your-org/Mango.Specifications.git
+git clone https://github.com/ferreXD/Mango.Specifications.git
 cd Mango.Specifications
 dotnet restore
 dotnet build
 ```
 
-> Target frameworks: .NET 8 (primary). Wider TFMs may be added if there’s demand.
+> Target frameworks: .NET 8 (primary). Wider TFMs may be added if there's demand.
 
 ---
 
 ## Running Tests
 
 ``` bash 
-## From Mango.Specifications root directory
+# Unit tests only (no database required)
+dotnet test --filter "Category!=Integration"
+
+# All tests including SQL Server integration tests (requires AdventureWorks2022)
+# Set MANGO_TEST_CONNECTION_STRING before running
 dotnet test
 ```
 
@@ -257,4 +261,3 @@ PRs welcome. Keep PRs focused and covered by tests. For bigger API changes, open
 
 - MIT — see [LICENSE](LICENSE).
 - Credits: Heavily inspired by Ardalis.Specification (MIT). Portions may conceptually derive from that work.
-
