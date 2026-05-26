@@ -20,8 +20,13 @@ namespace Mango.Specifications
             where TEntity : class
             where TResult : class
         {
-            var includableBuilder = ((IIncludableSpecificationBuilder<TEntity, TPreviousProperty>)previousBuilder).ThenInclude(thenIncludeExpression, condition);
-            return new IncludableSpecificationBuilder<TEntity, TResult, TProperty>((includableBuilder.Specification as Specification<TEntity, TResult>)!, !condition || previousBuilder.IsChainDiscarded);
+            if (condition && !previousBuilder.IsChainDiscarded)
+            {
+                var info = new IncludeExpressionInfo(thenIncludeExpression, typeof(TEntity), typeof(TProperty), typeof(TPreviousProperty));
+                previousBuilder.Specification.AddInclude(info);
+            }
+
+            return new IncludableSpecificationBuilder<TEntity, TResult, TProperty>(previousBuilder.Specification, !condition || previousBuilder.IsChainDiscarded);
         }
 
         public static IIncludableSpecificationBuilder<TEntity, TResult, TProperty> ThenInclude<TEntity, TResult, TPreviousProperty, TProperty>(
@@ -38,8 +43,13 @@ namespace Mango.Specifications
             where TEntity : class
             where TResult : class
         {
-            var includableBuilder = ((IIncludableSpecificationBuilder<TEntity, IEnumerable<TPreviousProperty>>)previousBuilder).ThenInclude(thenIncludeExpression, condition);
-            return new IncludableSpecificationBuilder<TEntity, TResult, TProperty>((includableBuilder.Specification as Specification<TEntity, TResult>)!, !condition || previousBuilder.IsChainDiscarded);
+            if (condition && !previousBuilder.IsChainDiscarded)
+            {
+                var info = new IncludeExpressionInfo(thenIncludeExpression, typeof(TEntity), typeof(TProperty), typeof(IEnumerable<TPreviousProperty>));
+                previousBuilder.Specification.AddInclude(info);
+            }
+
+            return new IncludableSpecificationBuilder<TEntity, TResult, TProperty>(previousBuilder.Specification, !condition || previousBuilder.IsChainDiscarded);
         }
     }
 }

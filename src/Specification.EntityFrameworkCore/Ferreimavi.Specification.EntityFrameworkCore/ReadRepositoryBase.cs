@@ -78,7 +78,7 @@
 
         protected virtual IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> specification) => specificationEvaluator.GetQuery(_query, specification);
 
-        protected virtual async Task<IQueryable<IGrouping<TKey, TResult>>> ApplySpecification<TKey, TResult>(IGroupingSpecification<T, TKey, TResult> specification, CancellationToken cancellationToken = default) => await specificationEvaluator.GetQuery(_query, specification, cancellationToken);
+        protected virtual async Task<IReadOnlyList<IGrouping<TKey, TResult>>> ApplySpecification<TKey, TResult>(IGroupingSpecification<T, TKey, TResult> specification, CancellationToken cancellationToken = default) => await specificationEvaluator.GetQuery(_query, specification, cancellationToken);
 
         #endregion
     }

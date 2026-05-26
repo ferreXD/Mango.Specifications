@@ -11,7 +11,7 @@ namespace Mango.Specifications
         internal static IOrderedGroupingSpecificationBuilder<T, TKey, TResult> OrderByType<T, TKey, TResult>(
             this IOrderedGroupingSpecificationBuilder<T, TKey, TResult> builder,
             Expression<Func<T, object?>> orderBy,
-            OrderTypeEnum orderByType,
+            OrderType orderByType,
             bool condition)
             where T : class
             where TResult : class
@@ -45,7 +45,7 @@ namespace Mango.Specifications
             bool condition)
             where T : class
             where TResult : class
-            => orderedBuilder.OrderByType(orderExpression, OrderTypeEnum.ThenBy, condition);
+            => orderedBuilder.OrderByType(orderExpression, OrderType.ThenBy, condition);
 
         public static IOrderedGroupingSpecificationBuilder<T, TKey, TResult> ThenByDescending<T, TKey, TResult>(
             this IOrderedGroupingSpecificationBuilder<T, TKey, TResult> orderedBuilder,
@@ -60,7 +60,7 @@ namespace Mango.Specifications
             bool condition)
             where T : class
             where TResult : class
-            => orderedBuilder.OrderByType(orderExpression, OrderTypeEnum.ThenByDescending, condition);
+            => orderedBuilder.OrderByType(orderExpression, OrderType.ThenByDescending, condition);
 
         #endregion
     }

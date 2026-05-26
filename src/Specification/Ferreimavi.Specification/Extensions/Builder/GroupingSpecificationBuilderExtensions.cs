@@ -91,7 +91,7 @@ namespace Mango.Specifications
             if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
 
             var orderedSpecificationBuilder = new OrderedGroupingSpecificationBuilder<T, TKey, TResult>(builder.Specification, !condition);
-            return orderedSpecificationBuilder.OrderByType(expression, OrderTypeEnum.OrderBy, condition);
+            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderBy, condition);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Mango.Specifications
             if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
 
             var orderedSpecificationBuilder = new OrderedGroupingSpecificationBuilder<T, TKey, TResult>(builder.Specification, !condition);
-            return orderedSpecificationBuilder.OrderByType(expression, OrderTypeEnum.OrderByDescending, condition);
+            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderByDescending, condition);
         }
 
         #endregion
@@ -169,8 +169,13 @@ namespace Mango.Specifications
             where T : class
             where TResult : class?
         {
-            var includableSpecificationBuilder = SpecificationBuilderExtensions.Include(builder, includeExpression, condition);
-            return new IncludableGroupingSpecificationBuilder<T, TKey, TResult, TProperty>((includableSpecificationBuilder.Specification as GroupingSpecification<T, TKey, TResult>)!, !condition);
+            if (condition)
+            {
+                var info = new IncludeExpressionInfo(includeExpression, typeof(T), typeof(TProperty));
+                builder.Specification.AddInclude(info);
+            }
+
+            return new IncludableGroupingSpecificationBuilder<T, TKey, TResult, TProperty>(builder.Specification, !condition);
         }
 
         #endregion
@@ -239,54 +244,6 @@ namespace Mango.Specifications
         /// <returns>The same grouping specification builder instance.</returns>
         public static IGroupingSpecificationBuilder<T, TKey, TResult> Take<T, TKey, TResult>(this IGroupingSpecificationBuilder<T, TKey, TResult> builder, int? count)
             => (IGroupingSpecificationBuilder<T, TKey, TResult>)SpecificationBuilderExtensions.Take(builder, count);
-
-        #endregion
-
-        #region Tracking Extensions
-
-        /// <summary>
-        /// Specifies that entities should be tracked by the database context with result type.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TKey">The type of the key used for grouping.</typeparam>
-        /// <typeparam name="TResult">The type of the result after grouping.</typeparam>
-        /// <param name="builder">The grouping specification builder.</param>
-        /// <returns>The same grouping specification builder instance with tracking enabled.</returns>
-        public static IGroupingSpecificationBuilder<T, TKey, TResult> AsTracking<T, TKey, TResult>(this IGroupingSpecificationBuilder<T, TKey, TResult> builder) => AsTracking(builder, true);
-
-        /// <summary>
-        /// Conditionally specifies that entities should be tracked by the database context with result type.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TKey">The type of the key used for grouping.</typeparam>
-        /// <typeparam name="TResult">The type of the result after grouping.</typeparam>
-        /// <param name="builder">The grouping specification builder.</param>
-        /// <param name="condition">Whether the tracking should be applied.</param>
-        /// <returns>The same grouping specification builder instance with tracking conditionally enabled.</returns>
-        public static IGroupingSpecificationBuilder<T, TKey, TResult> AsTracking<T, TKey, TResult>(this IGroupingSpecificationBuilder<T, TKey, TResult> builder, bool condition)
-            => (IGroupingSpecificationBuilder<T, TKey, TResult>)SpecificationBuilderExtensions.AsTracking(builder, condition);
-
-        /// <summary>
-        /// Specifies that entities should not be tracked by the database context with result type.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TKey">The type of the key used for grouping.</typeparam>
-        /// <typeparam name="TResult">The type of the result after grouping.</typeparam>
-        /// <param name="builder">The grouping specification builder.</param>
-        /// <returns>The same grouping specification builder instance with tracking disabled.</returns>
-        public static IGroupingSpecificationBuilder<T, TKey, TResult> AsNoTracking<T, TKey, TResult>(this IGroupingSpecificationBuilder<T, TKey, TResult> builder) => AsNoTracking(builder, true);
-
-        /// <summary>
-        /// Conditionally specifies that entities should not be tracked by the database context with result type.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TKey">The type of the key used for grouping.</typeparam>
-        /// <typeparam name="TResult">The type of the result after grouping.</typeparam>
-        /// <param name="builder">The grouping specification builder.</param>
-        /// <param name="condition">Whether no-tracking should be applied.</param>
-        /// <returns>The same grouping specification builder instance with tracking conditionally disabled.</returns>
-        public static IGroupingSpecificationBuilder<T, TKey, TResult> AsNoTracking<T, TKey, TResult>(this IGroupingSpecificationBuilder<T, TKey, TResult> builder, bool condition)
-            => (IGroupingSpecificationBuilder<T, TKey, TResult>)SpecificationBuilderExtensions.AsNoTracking(builder, condition);
 
         #endregion
     }

@@ -81,14 +81,40 @@
         int? Take { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the entities are tracked by the context.
+        /// Gets a value indicating whether the query is executed as a split query.
+        /// EF Core only. Default: <c>false</c>.
         /// </summary>
-        bool AsTracking { get; }
+        bool AsSplitQuery => false;
 
         /// <summary>
-        /// Gets a value indicating whether the entities are not tracked by the context.
+        /// Gets a value indicating whether the query is executed as a single query.
+        /// EF Core only. Default: <c>false</c>.
         /// </summary>
-        bool AsNoTracking { get; }
+        bool AsSingleQuery => false;
+        
+        /// <summary>
+        /// Gets a value indicating whether query filters should be ignored when executing queries.
+        /// EF Core only. Default: <c>false</c>.
+        /// </summary>
+        bool IgnoreQueryFilters => false;
+        
+        /// <summary>
+        /// Gets a value indicating whether queries are executed with no tracking but with identity resolution enabled.
+        /// EF Core only. Default: <c>false</c>.
+        /// </summary>
+        bool AsNoTrackingWithIdentityResolution => false;
+
+        /// <summary>
+        /// Gets the tag to be applied to queries for this specification.
+        /// EF Core only. Default: <c>""</c>.
+        /// </summary>
+        string TagWith => string.Empty;
+
+        /// <summary>
+        /// Gets the collection of string-based include paths used to specify related entities to include.
+        /// EF Core only. Default: empty.
+        /// </summary>
+        IEnumerable<string> StringIncludes => Array.Empty<string>();
 
         /// <summary>
         /// Evaluates the specification on the given collection of entities.

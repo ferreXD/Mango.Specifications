@@ -5,6 +5,7 @@
     using FluentAssertions;
     using Helpers.Factories;
 
+    [Trait("Category", "Integration")]
     public class ComposableSpecificationReadRepositoryTests
     {
         [Fact]
@@ -17,7 +18,7 @@
             var genderSpecification = new EmployeeByGenderSpecification(PersonFullNameSpecification.Gender.Male);
             var maritalStatusSpecification = new EmployeeByMaritalStatusSpecification(EmployeeByMaritalStatusSpecification.MaritalStatus.Single);
 
-            var spec = genderSpecification.AsComposable().And(maritalStatusSpecification).ReturnRoot().Build();
+            var spec = genderSpecification.AsComposable().And(maritalStatusSpecification).Build();
 
             // Act
             var results = await repository.ListAsync(spec);
@@ -45,7 +46,7 @@
             var genderSpecification = new EmployeeByGenderSpecification(PersonFullNameSpecification.Gender.Female);
             var senioritySpecification = new EmployeeBySenioritySpecification(seniority, EmployeeBySenioritySpecification.ComparisonType.LessThan);
 
-            var spec = genderSpecification.AsComposable().Or(senioritySpecification).ReturnRoot().Build();
+            var spec = genderSpecification.AsComposable().Or(senioritySpecification).Build();
 
             // Act
             var results = await repository.ListAsync(spec);
@@ -83,7 +84,6 @@
                 .OpenGroup(senioritySpecificationLessThan, ChainingType.Or)
                 .And(senioritySpecificationGreaterThan)
                 .CloseGroup()
-                .ReturnRoot()
                 .Build();
 
             // Act
@@ -115,7 +115,6 @@
             var spec = fullNameSpecification
                 .AsComposable()
                 .And(jobTitleSpecification)
-                .ReturnRoot()
                 .WithProjectionEvaluationPolicy(ProjectionEvaluationPolicy.Right)
                 .Build();
 
@@ -159,7 +158,6 @@
                 .And(senioritySpecificationLessThanSecond)
                 .CloseGroup()
                 .CloseGroup()
-                .ReturnRoot()
                 .WithProjectionEvaluationPolicy(ProjectionEvaluationPolicy.Left)
                 .Build();
 
@@ -217,7 +215,6 @@
                 .CloseGroup()
                 .CloseGroup()
                 .And(jobTitleSpecification)
-                .ReturnRoot()
                 .WithProjectionEvaluationPolicy(ProjectionEvaluationPolicy.Right)
                 .Build();
 

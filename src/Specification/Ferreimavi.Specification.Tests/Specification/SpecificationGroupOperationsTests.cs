@@ -25,14 +25,12 @@ namespace Mango.Specifications.Tests
             var orderByNameSpecification = new CustomerOrderByNameSpecification();
             var orderBySurnameSpecification = new CustomerOrderBySurnameSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderByNameSpecification)
+            var spec = orderByNameSpecification.AsComposable()
                 .And(orderBySurnameSpecification)
                 .OpenGroup(activeCustomerSpecification)
                 .OpenGroup(customerByNameSpecification)
                 .CloseGroup()
-                .CloseGroup() as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+                .CloseGroup()
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.Left)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -70,11 +68,10 @@ namespace Mango.Specifications.Tests
             var customerByNameSpecification = new CustomerByNameSpecification("Jane");
             var orderingSpecification = new CustomerOrderByNameSpecification();
 
-            var spec = new ComposableSpecificationBuilder<Customer>(orderingSpecification)
+            var spec = orderingSpecification.AsComposable()
                 .OpenGroup(activeCustomerSpecification)
                 .Or(customerByNameSpecification)
                 .CloseGroup()
-                .ReturnRoot()
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.Left)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();

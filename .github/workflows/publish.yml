@@ -1,0 +1,61 @@
+name: Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    name: Pack and push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history for GitVersion
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release --filter "Category!=Integration"
+
+      - name: Derive version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF_NAME}"          # e.g. v0.1.0-alpha.1
+          VERSION="${TAG#v}"                # strip leading 'v'
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Pack Mango.Specifications
+        run: |
+          dotnet pack src/Specification/Ferreimavi.Specification/Mango.Specifications.csproj \
+            --no-build --configuration Release \
+            -p:Version=${{ steps.version.outputs.VERSION }} \
+            --output ./nupkgs
+
+      - name: Pack Mango.Specifications.EntityFrameworkCore
+        run: |
+          dotnet pack src/Specification.EntityFrameworkCore/Ferreimavi.Specification.EntityFrameworkCore/Mango.Specifications.EntityFrameworkCore.csproj \
+            --no-build --configuration Release \
+            -p:Version=${{ steps.version.outputs.VERSION }} \
+            --output ./nupkgs
+
+      - name: Push to NuGet.org
+        run: |
+          dotnet nuget push "./nupkgs/*.nupkg" \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate

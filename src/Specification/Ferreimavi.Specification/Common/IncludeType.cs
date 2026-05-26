@@ -2,7 +2,7 @@
 
 namespace Mango.Specifications
 {
-    public enum IncludeTypeEnum
+    public enum IncludeType
     {
         Include,
         ThenInclude

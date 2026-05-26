@@ -41,7 +41,13 @@ namespace Mango.Specifications
         /// <param name="specification">The specification to convert into a composable builder.</param>
         /// <returns>A composable specification builder that can be used to chain specifications together.</returns>
         public static IComposableSpecificationBuilder<T> AsComposable<T>(this ISpecification<T> specification)
-            => new ComposableSpecificationBuilder<T>((specification as Specification<T>)!);
+        {
+            if (specification is not Specification<T> concrete)
+                throw new ArgumentException(
+                    $"Only specifications derived from {nameof(Specification<T>)} can be used as composable.",
+                    nameof(specification));
+            return new ComposableSpecificationBuilder<T>(concrete);
+        }
 
         /// <summary>
         /// Converts a specification with result projection into a composable specification builder to enable fluent composition of
@@ -55,6 +61,12 @@ namespace Mango.Specifications
         /// result projection.
         /// </returns>
         public static IComposableSpecificationBuilder<T, TResult> AsComposable<T, TResult>(this ISpecification<T, TResult> specification)
-            => new ComposableSpecificationBuilder<T, TResult>((specification as Specification<T, TResult>)!);
+        {
+            if (specification is not Specification<T, TResult> concrete)
+                throw new ArgumentException(
+                    $"Only specifications derived from {nameof(Specification<T>)} can be used as composable.",
+                    nameof(specification));
+            return new ComposableSpecificationBuilder<T, TResult>(concrete);
+        }
     }
 }

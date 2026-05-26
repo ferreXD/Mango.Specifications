@@ -126,7 +126,7 @@ namespace Mango.Specifications
             if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
 
             var orderedSpecificationBuilder = new OrderedSpecificationBuilder<T>(builder.Specification, !condition);
-            return orderedSpecificationBuilder.OrderByType(expression, OrderTypeEnum.OrderBy, condition);
+            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderBy, condition);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Mango.Specifications
             if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
 
             var orderedSpecificationBuilder = new OrderedSpecificationBuilder<T>(builder.Specification, !condition);
-            return orderedSpecificationBuilder.OrderByType(expression, OrderTypeEnum.OrderByDescending, condition);
+            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderByDescending, condition);
         }
 
         #endregion
@@ -219,58 +219,5 @@ namespace Mango.Specifications
 
         #endregion
 
-        #region Tracking Extensions
-
-        /// <summary>
-        /// Specifies that the entities should be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T> AsTracking<T>(this ISpecificationBuilder<T> builder) => AsTracking(builder, true);
-
-        /// <summary>
-        /// Conditionally specifies that the entities should be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <param name="condition">Whether tracking should be applied.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T> AsTracking<T>(this ISpecificationBuilder<T> builder, bool condition)
-        {
-            if (!condition) return builder;
-
-            builder.Specification.AsNoTracking = false;
-            builder.Specification.AsTracking = true;
-
-            return builder;
-        }
-
-        /// <summary>
-        /// Specifies that the entities should not be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T> AsNoTracking<T>(this ISpecificationBuilder<T> builder) => AsNoTracking(builder, true);
-
-        /// <summary>
-        /// Conditionally specifies that the entities should not be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <param name="condition">Whether no-tracking should be applied.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T> AsNoTracking<T>(this ISpecificationBuilder<T> builder, bool condition)
-        {
-            if (!condition) return builder;
-
-            builder.Specification.AsTracking = false;
-            builder.Specification.AsNoTracking = true;
-
-            return builder;
-        }
-
-        #endregion
     }
 }

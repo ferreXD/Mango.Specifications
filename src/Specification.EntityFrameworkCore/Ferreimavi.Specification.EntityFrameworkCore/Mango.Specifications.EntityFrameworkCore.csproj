@@ -4,10 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<PackageId>Ferreimavi.Specifications.EntityFrameworkCore</PackageId>
+    <PackageId>Mango.Specifications.EntityFrameworkCore</PackageId>
     <Version>$(LibraryVersion)</Version>
-    <Authors>Ferreimavi</Authors>
+    <Description>EF Core adapter for Mango.Specifications — applies specifications (filters, includes, ordering, pagination, projection) to IQueryable via DbSet.WithSpecification(...).</Description>
+    <PackageTags>specification;pattern;ddd;ef-core;entity-framework;repository;linq</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.13" />

@@ -2,10 +2,8 @@
 
 namespace Mango.Specifications
 {
-    public class ComposedGroupOperationBuilder<T>(IBaseComposableSpecificationBuilder<T> rootBuilder, List<CompositionOperation<T>> operations) : IComposedGroupOperationBuilder<T>
+    internal class ComposedGroupOperationBuilder<T>(IComposableSpecificationBuilder<T> rootBuilder, List<CompositionOperation<T>> operations) : IComposedGroupOperationBuilder<T>
     {
-        private readonly IBaseComposableSpecificationBuilder<T> _rootBuilder = rootBuilder;
-
         public IBaseComposableSpecificationBuilder<T> OpenGroup(ISpecification<T> initialSpec, ChainingType chainingType = ChainingType.And)
         {
             operations.Add(new CompositionOperation<T>(OperationType.GroupOpen, initialSpec, chainingType));
@@ -24,33 +22,32 @@ namespace Mango.Specifications
             return this;
         }
 
+        public IBaseComposableSpecificationBuilder<T> Not(ISpecification<T> spec)
+            => And(new NotSpecification<T>(spec));
+
         public IBaseComposableSpecificationBuilder<T> CloseGroup()
         {
-            // We notify the parent builder that a group is closed
-            _rootBuilder.CloseGroup();
-            return _rootBuilder;
+            rootBuilder.CloseGroup();
+            return rootBuilder;
         }
 
-        public IComposableSpecificationBuilder<T> ReturnRoot()
+        public IBaseComposableSpecificationBuilder<T> WithOrderingEvaluationPolicy(OrderingEvaluationPolicy policy)
         {
-            if (_rootBuilder is IComposableSpecificationBuilder<T> root) return root;
-
-            return RecurseToRoot(_rootBuilder);
+            rootBuilder.WithOrderingEvaluationPolicy(policy);
+            return this;
         }
 
-        private IComposableSpecificationBuilder<T> RecurseToRoot(IBaseComposableSpecificationBuilder<T> builder)
+        public IBaseComposableSpecificationBuilder<T> WithPaginationEvaluationPolicy(PaginationEvaluationPolicy policy)
         {
-            if (builder is IComposableSpecificationBuilder<T> root) return root;
-
-            var composedGroupOperationBuilder = builder as ComposedGroupOperationBuilder<T>;
-            return RecurseToRoot(composedGroupOperationBuilder!._rootBuilder);
+            rootBuilder.WithPaginationEvaluationPolicy(policy);
+            return this;
         }
+
+        public ISpecification<T> Build() => rootBuilder.Build();
     }
 
-    public class ComposedGroupOperationBuilder<T, TResult>(IBaseComposableSpecificationBuilder<T, TResult> rootBuilder, List<CompositionOperation<T, TResult>> operations) : IComposedGroupOperationBuilder<T, TResult>
+    public class ComposedGroupOperationBuilder<T, TResult>(IComposableSpecificationBuilder<T, TResult> rootBuilder, List<CompositionOperation<T, TResult>> operations) : IComposedGroupOperationBuilder<T, TResult>
     {
-        private readonly IBaseComposableSpecificationBuilder<T, TResult> _rootBuilder = rootBuilder;
-
         public IBaseComposableSpecificationBuilder<T, TResult> OpenGroup(ISpecification<T> initialSpec, ChainingType type = ChainingType.And)
         {
             var projectionSpec = BuildProjectableSpecification(initialSpec);
@@ -92,27 +89,37 @@ namespace Mango.Specifications
             return this;
         }
 
+        public IBaseComposableSpecificationBuilder<T, TResult> Not(ISpecification<T> spec)
+            => And(new NotSpecification<T>(spec));
+
+        public IBaseComposableSpecificationBuilder<T, TResult> Not(ISpecification<T, TResult> spec)
+            => And(new NotSpecification<T, TResult>(spec));
+
         public IBaseComposableSpecificationBuilder<T, TResult> CloseGroup()
         {
-            // We notify the parent builder that a group is closed
-            _rootBuilder.CloseGroup();
-            return _rootBuilder;
+            rootBuilder.CloseGroup();
+            return rootBuilder;
         }
 
-        public IComposableSpecificationBuilder<T, TResult> ReturnRoot()
+        public IBaseComposableSpecificationBuilder<T, TResult> WithOrderingEvaluationPolicy(OrderingEvaluationPolicy policy)
         {
-            if (_rootBuilder is IComposableSpecificationBuilder<T, TResult> root) return root;
-
-            return RecurseToRoot(_rootBuilder);
+            rootBuilder.WithOrderingEvaluationPolicy(policy);
+            return this;
         }
 
-        private IComposableSpecificationBuilder<T, TResult> RecurseToRoot(IBaseComposableSpecificationBuilder<T, TResult> builder)
+        public IBaseComposableSpecificationBuilder<T, TResult> WithPaginationEvaluationPolicy(PaginationEvaluationPolicy policy)
         {
-            if (builder is IComposableSpecificationBuilder<T, TResult> root) return root;
-
-            var composedGroupOperationBuilder = builder as ComposedGroupOperationBuilder<T, TResult>;
-            return RecurseToRoot(composedGroupOperationBuilder!._rootBuilder);
+            rootBuilder.WithPaginationEvaluationPolicy(policy);
+            return this;
         }
+
+        public IBaseComposableSpecificationBuilder<T, TResult> WithProjectionEvaluationPolicy(ProjectionEvaluationPolicy policy)
+        {
+            rootBuilder.WithProjectionEvaluationPolicy(policy);
+            return this;
+        }
+
+        public ISpecification<T, TResult> Build() => rootBuilder.Build();
 
         private static Specification<T, TResult> BuildProjectableSpecification(ISpecification<T> spec)
         {
@@ -124,8 +131,12 @@ namespace Mango.Specifications
 
             projectionSpec.Skip = spec.Skip;
             projectionSpec.Take = spec.Take;
-            projectionSpec.AsTracking = spec.AsTracking;
-            projectionSpec.AsNoTracking = spec.AsNoTracking;
+
+            if (spec is Specification<T> trackable)
+            {
+                projectionSpec.AsTracking = trackable.AsTracking;
+                projectionSpec.AsNoTracking = trackable.AsNoTracking;
+            }
 
             return projectionSpec;
         }

@@ -63,8 +63,8 @@ namespace Mango.Specifications
         {
             return expression.OrderType switch
             {
-                OrderTypeEnum.OrderBy => source.OrderBy(expression.KeySelectorFunc),
-                OrderTypeEnum.OrderByDescending => source.OrderByDescending(expression.KeySelectorFunc),
+                OrderType.OrderBy => source.OrderBy(expression.KeySelectorFunc),
+                OrderType.OrderByDescending => source.OrderByDescending(expression.KeySelectorFunc),
                 _ => source.OrderBy(expression.KeySelectorFunc) // Default to OrderBy
             };
         }
@@ -77,8 +77,8 @@ namespace Mango.Specifications
         {
             return expression.OrderType switch
             {
-                OrderTypeEnum.ThenBy or OrderTypeEnum.OrderBy => ordered.ThenBy(expression.KeySelectorFunc),
-                OrderTypeEnum.ThenByDescending or OrderTypeEnum.OrderByDescending => ordered.ThenByDescending(expression.KeySelectorFunc),
+                OrderType.ThenBy or OrderType.OrderBy => ordered.ThenBy(expression.KeySelectorFunc),
+                OrderType.ThenByDescending or OrderType.OrderByDescending => ordered.ThenByDescending(expression.KeySelectorFunc),
                 _ => ordered.ThenBy(expression.KeySelectorFunc) // Default to ThenBy
             };
         }

@@ -6,6 +6,7 @@
     using Helpers.Factories;
     using Microsoft.EntityFrameworkCore;
 
+    [Trait("Category", "Integration")]
     public class IncludeSpecificationTests
     {
         [Fact]

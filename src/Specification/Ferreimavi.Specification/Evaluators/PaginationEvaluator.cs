@@ -12,6 +12,8 @@ namespace Mango.Specifications
 
         public IEnumerable<T> Evaluate<T>(IEnumerable<T> query, ISpecification<T> specification)
         {
+            if (specification.Skip is null && specification.Take is null) return query;
+
             var skip = specification.Skip ?? 0;
             var take = specification.Take ?? query.Count();
 

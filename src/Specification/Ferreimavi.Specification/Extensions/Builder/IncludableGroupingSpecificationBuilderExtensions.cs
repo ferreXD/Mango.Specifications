@@ -25,7 +25,7 @@ namespace Mango.Specifications
             if (condition && !previousBuilder.IsChainDiscarded)
             {
                 var info = new IncludeExpressionInfo(thenIncludeExpression, typeof(TEntity), typeof(TProperty), typeof(TPreviousProperty));
-                ((List<IncludeExpressionInfo>)previousBuilder.Specification.IncludeExpressions).Add(info);
+                previousBuilder.Specification.AddInclude(info);
             }
 
             var includeBuilder = new IncludableGroupingSpecificationBuilder<TEntity, TKey, TResult, TProperty>(previousBuilder.Specification, !condition || previousBuilder.IsChainDiscarded);
@@ -50,7 +50,7 @@ namespace Mango.Specifications
             if (condition && !previousBuilder.IsChainDiscarded)
             {
                 var info = new IncludeExpressionInfo(thenIncludeExpression, typeof(TEntity), typeof(TProperty), typeof(IEnumerable<TPreviousProperty>));
-                ((List<IncludeExpressionInfo>)previousBuilder.Specification.IncludeExpressions).Add(info);
+                previousBuilder.Specification.AddInclude(info);
             }
 
             var includeBuilder = new IncludableGroupingSpecificationBuilder<TEntity, TKey, TResult, TProperty>(previousBuilder.Specification, !condition || previousBuilder.IsChainDiscarded);

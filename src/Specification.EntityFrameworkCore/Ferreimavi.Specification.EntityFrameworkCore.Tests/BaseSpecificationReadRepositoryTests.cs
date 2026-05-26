@@ -6,6 +6,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
     using FluentAssertions;
     using Helpers.Factories;
 
+    [Trait("Category", "Integration")]
     public class BaseSpecificationReadRepositoryTests
     {
         [Theory]

@@ -4,9 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<PackageId>Ferreimavi.Specifications</PackageId>
+    <PackageId>Mango.Specifications</PackageId>
     <Version>$(LibraryVersion)</Version>
-    <Authors>Ferreimavi</Authors>
+    <Description>Specification pattern for .NET — parentheses-aware And/Or/Not composition with precedence groups, policy-driven merges (ordering, pagination, projection), and first-class GroupBy. In-memory and EF Core parity.</Description>
+    <PackageTags>specification;pattern;ddd;linq;composition;ef-core;repository</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>

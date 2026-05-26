@@ -30,22 +30,29 @@ namespace Mango.Specifications
                 _ => throw new InvalidDataException("Invalid expression type")
             };
 
-            // Combine all filter expressions from both specifications
-            var expressions = left.WhereExpressions
-                .Concat(right.WhereExpressions)
-                .ToArray();
+            // Step 1: AND-reduce each side independently so that multi-filter specs are
+            // treated as a single logical unit before the cross-side operator is applied.
+            // Without this step, OR would flatten to f1 OR f2 OR f3 OR f4 instead of
+            // the correct (f1 AND f2) OR (f3 AND f4).
+            var leftReduced = Reduce<T>(left.WhereExpressions.Select(x => x.Filter).ToList());
+            var rightReduced = Reduce<T>(right.WhereExpressions.Select(x => x.Filter).ToList());
 
-            var count = expressions.Length;
-
-            // Handle special cases to avoid unnecessary operations
-            if (count == 0) return _ => true; // No filters means everything passes
-
-            if (count == 1) return expressions[0].Filter; // Single filter can be returned directly
-
-            // Aggregate multiple filters using the appropriate combiner
-            return expressions
-                .Select(x => x.Filter)
-                .Aggregate(combiner);
+            // Step 2: combine the two reduced operands with the requested operator
+            return (leftReduced, rightReduced) switch
+            {
+                (null, null) => _ => true,
+                ({ } l, null) => l,
+                (null, { } r) => r,
+                ({ } l, { } r) => combiner(l, r)
+            };
         }
+
+        private static Expression<Func<T, bool>>? Reduce<T>(List<Expression<Func<T, bool>>> expressions) =>
+            expressions.Count switch
+            {
+                0 => null,
+                1 => expressions[0],
+                _ => expressions.Aggregate(ExpressionCombiner.AndAlso)
+            };
     }
 }

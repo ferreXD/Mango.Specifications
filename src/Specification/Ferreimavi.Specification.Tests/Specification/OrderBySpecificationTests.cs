@@ -60,10 +60,8 @@ namespace Mango.Specifications.Tests
             var orderBySpec = new CustomerOrderByNameSpecification();
             var activeSpec = new ActiveCustomerSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderBySpec)
-                .And(activeSpec) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = orderBySpec.AsComposable()
+                .And(activeSpec)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.None)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -111,10 +109,8 @@ namespace Mango.Specifications.Tests
             var orderByNameSpec = new CustomerOrderByNameSpecification();
             var orderBySurnameSpec = new CustomerOrderBySurnameSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderByNameSpec)
-                .And(orderBySurnameSpec) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = orderByNameSpec.AsComposable()
+                .And(orderBySurnameSpec)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.BothLeftPriority)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -145,10 +141,8 @@ namespace Mango.Specifications.Tests
             var orderByNameSpec = new CustomerOrderByNameSpecification();
             var orderBySurnameSpec = new CustomerOrderBySurnameSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderByNameSpec)
-                .And(orderBySurnameSpec) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = orderByNameSpec.AsComposable()
+                .And(orderBySurnameSpec)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.BothRightPriority)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -179,10 +173,8 @@ namespace Mango.Specifications.Tests
             var orderByNameSpec = new CustomerOrderByNameSpecification();
             var orderBySurnameSpec = new CustomerOrderBySurnameSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderByNameSpec)
-                .And(orderBySurnameSpec) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = orderByNameSpec.AsComposable()
+                .And(orderBySurnameSpec)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.Left)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -213,10 +205,8 @@ namespace Mango.Specifications.Tests
             var orderByNameSpec = new CustomerOrderByNameSpecification();
             var orderBySurnameSpec = new CustomerOrderBySurnameSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderByNameSpec)
-                .And(orderBySurnameSpec) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = orderByNameSpec.AsComposable()
+                .And(orderBySurnameSpec)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.Right)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -247,10 +237,8 @@ namespace Mango.Specifications.Tests
             var orderByNameSpec = new CustomerOrderByNameSpecification();
             var orderBySurnameSpec = new CustomerOrderBySurnameSpecification();
 
-            var builder = new ComposableSpecificationBuilder<Customer>(orderByNameSpec)
-                .And(orderBySurnameSpec) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = orderByNameSpec.AsComposable()
+                .And(orderBySurnameSpec)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.None)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();

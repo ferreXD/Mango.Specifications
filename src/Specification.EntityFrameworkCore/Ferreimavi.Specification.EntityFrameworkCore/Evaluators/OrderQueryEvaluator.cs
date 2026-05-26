@@ -23,8 +23,8 @@ namespace Mango.Specifications.EntityFrameworkCore
             var firstExpression = expressions[0];
             var ordered = firstExpression.OrderType switch
             {
-                OrderTypeEnum.OrderBy => source.OrderBy(firstExpression.KeySelector),
-                OrderTypeEnum.OrderByDescending => source.OrderByDescending(firstExpression.KeySelector),
+                OrderType.OrderBy => source.OrderBy(firstExpression.KeySelector),
+                OrderType.OrderByDescending => source.OrderByDescending(firstExpression.KeySelector),
                 _ => source.OrderBy(firstExpression.KeySelector)
             };
 
@@ -34,8 +34,8 @@ namespace Mango.Specifications.EntityFrameworkCore
                 var expression = expressions[i];
                 ordered = expression.OrderType switch
                 {
-                    OrderTypeEnum.ThenBy => ordered.ThenBy(expression.KeySelector),
-                    OrderTypeEnum.ThenByDescending => ordered.ThenByDescending(expression.KeySelector),
+                    OrderType.ThenBy => ordered.ThenBy(expression.KeySelector),
+                    OrderType.ThenByDescending => ordered.ThenByDescending(expression.KeySelector),
                     _ => ordered.ThenBy(expression.KeySelector)
                 };
             }

@@ -73,8 +73,8 @@ namespace Mango.Specifications.EntityFrameworkCore
         {
             return specification.IncludeExpressions.Aggregate(query, (current, includeInfo) => includeInfo.Type switch
             {
-                IncludeTypeEnum.Include => BuildInclude<T>(current, includeInfo),
-                IncludeTypeEnum.ThenInclude => BuildThenInclude<T>(current, includeInfo),
+                IncludeType.Include => BuildInclude<T>(current, includeInfo),
+                IncludeType.ThenInclude => BuildThenInclude<T>(current, includeInfo),
                 _ => current
             });
         }

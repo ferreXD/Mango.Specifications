@@ -12,7 +12,14 @@ namespace Mango.Specifications.EntityFrameworkCore
 
         public IQueryable<T> GetQuery<T>(IQueryable<T> query, ISpecification<T> specification) where T : class
         {
-            if (!specification.AsNoTracking) return query;
+            var shouldNoTrack = specification switch
+            {
+                Specification<T> concrete => concrete.AsNoTracking,
+                IEFSpecification<T> ef    => ef.AsNoTracking,
+                _                         => false
+            };
+
+            if (!shouldNoTrack) return query;
 
             return query.AsNoTracking();
         }

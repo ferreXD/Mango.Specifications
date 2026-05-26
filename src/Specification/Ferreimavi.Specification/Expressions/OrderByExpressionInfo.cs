@@ -8,7 +8,7 @@ namespace Mango.Specifications
     /// Encapsulates data needed to perform sorting.
     /// </summary>
     /// <typeparam name="T">Type of the entity to apply sort on.</typeparam>
-    public class OrderByExpressionInfo<T>(Expression<Func<T, object?>> keySelector, OrderTypeEnum orderType)
+    public class OrderByExpressionInfo<T>(Expression<Func<T, object?>> keySelector, OrderType orderType)
     {
         private readonly Lazy<Func<T, object?>> _keySelectorFunc = new(keySelector.Compile);
 
@@ -20,7 +20,7 @@ namespace Mango.Specifications
         /// <summary>
         /// Whether to (subsequently) sort ascending or descending.
         /// </summary>
-        public OrderTypeEnum OrderType { get; } = orderType;
+        public OrderType OrderType { get; } = orderType;
 
         /// <summary>
         /// Compiled <see cref="KeySelector" />.

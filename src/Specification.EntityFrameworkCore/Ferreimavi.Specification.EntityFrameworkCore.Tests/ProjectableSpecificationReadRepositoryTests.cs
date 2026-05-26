@@ -5,6 +5,7 @@
     using FluentAssertions;
     using Helpers.Factories;
 
+    [Trait("Category", "Integration")]
     public class ProjectableSpecificationReadRepositoryTests
     {
         [Fact]

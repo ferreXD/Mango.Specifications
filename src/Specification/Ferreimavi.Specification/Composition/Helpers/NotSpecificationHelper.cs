@@ -8,9 +8,14 @@ namespace Mango.Specifications
     {
         internal static Expression<Func<T, bool>> ComposeNotCriteria<T>(ISpecification<T> spec)
         {
-            return spec.WhereExpressions
+            var expressions = spec.WhereExpressions
                 .Select(x => ExpressionCombiner.Not(x.Filter))
-                .Aggregate(ExpressionCombiner.AndAlso);
+                .ToList();
+
+            if (expressions.Count == 0)
+                return _ => false;
+
+            return expressions.Aggregate(ExpressionCombiner.AndAlso);
         }
     }
 }

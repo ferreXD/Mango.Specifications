@@ -14,7 +14,7 @@ namespace Mango.Specifications
         public static IOrderedSpecificationBuilder<T> ThenBy<T>(
             this IOrderedSpecificationBuilder<T> orderedBuilder,
             Expression<Func<T, object?>> orderExpression,
-            bool condition) => orderedBuilder.OrderByType(orderExpression, OrderTypeEnum.ThenBy, condition);
+            bool condition) => orderedBuilder.OrderByType(orderExpression, OrderType.ThenBy, condition);
 
         public static IOrderedSpecificationBuilder<T> ThenByDescending<T>(
             this IOrderedSpecificationBuilder<T> orderedBuilder,
@@ -24,14 +24,14 @@ namespace Mango.Specifications
         public static IOrderedSpecificationBuilder<T> ThenByDescending<T>(
             this IOrderedSpecificationBuilder<T> orderedBuilder,
             Expression<Func<T, object?>> orderExpression,
-            bool condition) => orderedBuilder.OrderByType(orderExpression, OrderTypeEnum.ThenByDescending, condition);
+            bool condition) => orderedBuilder.OrderByType(orderExpression, OrderType.ThenByDescending, condition);
 
         #region Internal Methods
 
         internal static IOrderedSpecificationBuilder<T> OrderByType<T>(
             this IOrderedSpecificationBuilder<T> builder,
             Expression<Func<T, object?>> orderBy,
-            OrderTypeEnum orderByType,
+            OrderType orderByType,
             bool condition)
         {
             if (!condition || builder.IsChainDiscarded)

@@ -116,8 +116,13 @@ namespace Mango.Specifications
             where T : class
             where TResult : class
         {
-            var includeSpecificationBuilder = SpecificationBuilderExtensions.Include(specificationBuilder, includeExpression, condition);
-            return new IncludableSpecificationBuilder<T, TResult, TProperty>((includeSpecificationBuilder.Specification as Specification<T, TResult>)!, !condition);
+            if (condition)
+            {
+                var info = new IncludeExpressionInfo(includeExpression, typeof(T), typeof(TProperty));
+                specificationBuilder.Specification.AddInclude(info);
+            }
+
+            return new IncludableSpecificationBuilder<T, TResult, TProperty>(specificationBuilder.Specification, !condition);
         }
 
         #endregion
@@ -146,8 +151,10 @@ namespace Mango.Specifications
         /// <returns>An ordered specification builder.</returns>
         public static IOrderedSpecificationBuilder<T, TResult> OrderBy<T, TResult>(this ISpecificationBuilder<T, TResult> builder, Expression<Func<T, object?>> expression, bool condition)
         {
-            var orderedSpecificationBuilder = SpecificationBuilderExtensions.OrderBy(builder, expression, condition);
-            return new OrderedSpecificationBuilder<T, TResult>((orderedSpecificationBuilder.Specification as Specification<T, TResult>)!, !condition);
+            if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
+
+            var orderedSpecificationBuilder = new OrderedSpecificationBuilder<T, TResult>(builder.Specification, !condition);
+            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderBy, condition);
         }
 
         /// <summary>
@@ -172,8 +179,10 @@ namespace Mango.Specifications
         /// <returns>An ordered specification builder.</returns>
         public static IOrderedSpecificationBuilder<T, TResult> OrderByDescending<T, TResult>(this ISpecificationBuilder<T, TResult> builder, Expression<Func<T, object?>> expression, bool condition)
         {
-            var orderedSpecificationBuilder = SpecificationBuilderExtensions.OrderByDescending(builder, expression, condition);
-            return new OrderedSpecificationBuilder<T, TResult>((orderedSpecificationBuilder.Specification as Specification<T, TResult>)!, !condition);
+            if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
+
+            var orderedSpecificationBuilder = new OrderedSpecificationBuilder<T, TResult>(builder.Specification, !condition);
+            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderByDescending, condition);
         }
 
         #endregion
@@ -233,50 +242,6 @@ namespace Mango.Specifications
         /// <returns>The same specification builder instance.</returns>
         public static ISpecificationBuilder<T, TResult> Take<T, TResult>(this ISpecificationBuilder<T, TResult> builder, int? count)
             => (ISpecificationBuilder<T, TResult>)SpecificationBuilderExtensions.Take(builder, count);
-
-        #endregion
-
-        #region Tracking Extensions
-
-        /// <summary>
-        /// Specifies that the entities should be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TResult">The type of the result after projection.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T, TResult> AsTracking<T, TResult>(this ISpecificationBuilder<T, TResult> builder) => AsTracking(builder, true);
-
-        /// <summary>
-        /// Conditionally specifies that the entities should be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TResult">The type of the result after projection.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <param name="condition">Whether tracking should be applied.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T, TResult> AsTracking<T, TResult>(this ISpecificationBuilder<T, TResult> builder, bool condition)
-            => (ISpecificationBuilder<T, TResult>)SpecificationBuilderExtensions.AsTracking(builder, condition);
-
-        /// <summary>
-        /// Specifies that the entities should not be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TResult">The type of the result after projection.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T, TResult> AsNoTracking<T, TResult>(this ISpecificationBuilder<T, TResult> builder) => AsNoTracking(builder, true);
-
-        /// <summary>
-        /// Conditionally specifies that the entities should not be tracked by the database context.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <typeparam name="TResult">The type of the result after projection.</typeparam>
-        /// <param name="builder">The specification builder.</param>
-        /// <param name="condition">Whether tracking should be applied.</param>
-        /// <returns>The same specification builder instance.</returns>
-        public static ISpecificationBuilder<T, TResult> AsNoTracking<T, TResult>(this ISpecificationBuilder<T, TResult> builder, bool condition)
-            => (ISpecificationBuilder<T, TResult>)SpecificationBuilderExtensions.AsNoTracking(builder, condition);
 
         #endregion
     }

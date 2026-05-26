@@ -23,10 +23,8 @@ namespace Mango.Specifications.Tests
             var activeCustomerSpecification = new ActiveCustomerSpecification();
             var customerByNameSpecification = new CustomerByNameSpecification("John");
 
-            var builder = new ComposableSpecificationBuilder<Customer>(activeCustomerSpecification)
-                .And(customerByNameSpecification) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = activeCustomerSpecification.AsComposable()
+                .And(customerByNameSpecification)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.None)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -48,10 +46,8 @@ namespace Mango.Specifications.Tests
             var activeCustomerSpecification = new ActiveCustomerSpecification();
             var customerByNameSpecification = new CustomerByNameSpecification("John");
 
-            var builder = new ComposableSpecificationBuilder<Customer>(activeCustomerSpecification)
-                .And(customerByNameSpecification) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = activeCustomerSpecification.AsComposable()
+                .And(customerByNameSpecification)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.None)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();
@@ -69,10 +65,8 @@ namespace Mango.Specifications.Tests
             // Arrange
             var activeCustomerSpecification = new ActiveCustomerSpecification();
             var customerByNameSpecification = new CustomerByNameSpecification("John");
-            var builder = new ComposableSpecificationBuilder<Customer>(activeCustomerSpecification)
-                .And(customerByNameSpecification) as IComposableSpecificationBuilder<Customer>;
-
-            var spec = builder!
+            var spec = activeCustomerSpecification.AsComposable()
+                .And(customerByNameSpecification)
                 .WithOrderingEvaluationPolicy(OrderingEvaluationPolicy.None)
                 .WithPaginationEvaluationPolicy(PaginationEvaluationPolicy.None)
                 .Build();

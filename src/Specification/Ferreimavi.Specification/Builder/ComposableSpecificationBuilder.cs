@@ -2,7 +2,7 @@
 
 namespace Mango.Specifications
 {
-    public class ComposableSpecificationBuilder<T>(
+    internal class ComposableSpecificationBuilder<T>(
         Specification<T> specification,
         OrderingEvaluationPolicy orderingEvaluationPolicy,
         PaginationEvaluationPolicy paginationEvaluationPolicy) : IComposableSpecificationBuilder<T>
@@ -34,13 +34,16 @@ namespace Mango.Specifications
             return this;
         }
 
-        public IComposableSpecificationBuilder<T> WithOrderingEvaluationPolicy(OrderingEvaluationPolicy policy)
+        public IBaseComposableSpecificationBuilder<T> Not(ISpecification<T> spec)
+            => And(new NotSpecification<T>(spec));
+
+        public IBaseComposableSpecificationBuilder<T> WithOrderingEvaluationPolicy(OrderingEvaluationPolicy policy)
         {
             _orderingPolicy = policy;
             return this;
         }
 
-        public IComposableSpecificationBuilder<T> WithPaginationEvaluationPolicy(PaginationEvaluationPolicy policy)
+        public IBaseComposableSpecificationBuilder<T> WithPaginationEvaluationPolicy(PaginationEvaluationPolicy policy)
         {
             _paginationPolicy = policy;
             return this;
@@ -53,8 +56,6 @@ namespace Mango.Specifications
             _operations.Add(new CompositionOperation<T>(OperationType.GroupClose));
             return this;
         }
-
-        public IComposableSpecificationBuilder<T> ReturnRoot() => this;
 
         // parse Operations in order, unify them into a single spec
         // using your “stack-based” or “shunting-yard” approach.
@@ -88,7 +89,7 @@ namespace Mango.Specifications
         {
             var projectionSpec = BuildProjectableSpecification(initialSpec);
             _operations.Add(new CompositionOperation<T, TResult>(OperationType.GroupOpen, projectionSpec, type));
-            return this;
+            return new ComposedGroupOperationBuilder<T, TResult>(this, _operations);
         }
 
         public IBaseComposableSpecificationBuilder<T, TResult> OpenGroup(ISpecification<T, TResult> initialSpec, ChainingType type = ChainingType.And)
@@ -125,19 +126,25 @@ namespace Mango.Specifications
             return this;
         }
 
-        public IComposableSpecificationBuilder<T, TResult> WithOrderingEvaluationPolicy(OrderingEvaluationPolicy policy)
+        public IBaseComposableSpecificationBuilder<T, TResult> Not(ISpecification<T> spec)
+            => And(new NotSpecification<T>(spec));
+
+        public IBaseComposableSpecificationBuilder<T, TResult> Not(ISpecification<T, TResult> spec)
+            => And(new NotSpecification<T, TResult>(spec));
+
+        public IBaseComposableSpecificationBuilder<T, TResult> WithOrderingEvaluationPolicy(OrderingEvaluationPolicy policy)
         {
             _orderingPolicy = policy;
             return this;
         }
 
-        public IComposableSpecificationBuilder<T, TResult> WithPaginationEvaluationPolicy(PaginationEvaluationPolicy policy)
+        public IBaseComposableSpecificationBuilder<T, TResult> WithPaginationEvaluationPolicy(PaginationEvaluationPolicy policy)
         {
             _paginationPolicy = policy;
             return this;
         }
 
-        public IComposableSpecificationBuilder<T, TResult> WithProjectionEvaluationPolicy(ProjectionEvaluationPolicy policy)
+        public IBaseComposableSpecificationBuilder<T, TResult> WithProjectionEvaluationPolicy(ProjectionEvaluationPolicy policy)
         {
             _projectionPolicy = policy;
             return this;
@@ -150,8 +157,6 @@ namespace Mango.Specifications
             _operations.Add(new CompositionOperation<T, TResult>(OperationType.GroupClose));
             return this;
         }
-
-        public IComposableSpecificationBuilder<T, TResult> ReturnRoot() => this;
 
         // parse Operations in order, unify them into a single spec
         // using your “stack-based” or “shunting-yard” approach.
@@ -169,8 +174,12 @@ namespace Mango.Specifications
 
             projectionSpec.Skip = spec.Skip;
             projectionSpec.Take = spec.Take;
-            projectionSpec.AsTracking = spec.AsTracking;
-            projectionSpec.AsNoTracking = spec.AsNoTracking;
+
+            if (spec is Specification<T> trackable)
+            {
+                projectionSpec.AsTracking = trackable.AsTracking;
+                projectionSpec.AsNoTracking = trackable.AsNoTracking;
+            }
 
             return projectionSpec;
         }

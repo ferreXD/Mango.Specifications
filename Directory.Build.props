@@ -1,6 +1,12 @@
 ﻿<Project>
     <PropertyGroup>
-        <LibraryVersion>1.0.0</LibraryVersion>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <LibraryVersion>0.1.0-alpha.1</LibraryVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Authors>ferreXD</Authors>
+        <Copyright>Copyright © 2024 ferreXD</Copyright>
+        <RepositoryUrl>https://github.com/ferreXD/Mango.Specifications</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageProjectUrl>https://github.com/ferreXD/Mango.Specifications</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 </Project>

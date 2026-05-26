@@ -17,7 +17,7 @@ namespace Mango.Specifications
             LambdaExpression = expression ?? throw new ArgumentNullException(nameof(expression));
             EntityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
             PropertyType = propertyType ?? throw new ArgumentNullException(nameof(propertyType));
-            Type = IncludeTypeEnum.Include;
+            Type = IncludeType.Include;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Mango.Specifications
             EntityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
             PropertyType = propertyType ?? throw new ArgumentNullException(nameof(propertyType));
             PreviousPropertyType = previousPropertyType ?? throw new ArgumentNullException(nameof(previousPropertyType));
-            Type = IncludeTypeEnum.ThenInclude;
+            Type = IncludeType.ThenInclude;
         }
 
         /// <summary>
@@ -61,6 +61,6 @@ namespace Mango.Specifications
         /// <summary>
         /// Whether this is an Include or ThenInclude.
         /// </summary>
-        public IncludeTypeEnum Type { get; }
+        public IncludeType Type { get; }
     }
 }

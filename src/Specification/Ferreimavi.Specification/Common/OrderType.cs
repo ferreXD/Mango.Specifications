@@ -2,7 +2,7 @@
 
 namespace Mango.Specifications
 {
-    public enum OrderTypeEnum
+    public enum OrderType
     {
         OrderBy,
         OrderByDescending,

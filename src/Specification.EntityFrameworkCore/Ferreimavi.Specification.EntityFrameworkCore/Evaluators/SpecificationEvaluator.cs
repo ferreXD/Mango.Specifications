@@ -99,9 +99,9 @@ namespace Mango.Specifications.EntityFrameworkCore
         /// <param name="query">The initial query.</param>
         /// <param name="specification">The grouping specification to apply.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A queryable collection of groupings.</returns>
+        /// <returns>A materialised read-only list of groupings.</returns>
         /// <exception cref="SelectorNotFoundException">Thrown when GroupResultSelector or GroupBySelector is not defined.</exception>
-        public async Task<IQueryable<IGrouping<TKey, TResult>>> GetQuery<T, TKey, TResult>(IQueryable<T> query, IGroupingSpecification<T, TKey, TResult> specification, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<IGrouping<TKey, TResult>>> GetQuery<T, TKey, TResult>(IQueryable<T> query, IGroupingSpecification<T, TKey, TResult> specification, CancellationToken cancellationToken)
             where T : class
         {
             if (specification is { GroupResultSelector: null }) throw new SelectorNotFoundException();
@@ -128,7 +128,7 @@ namespace Mango.Specifications.EntityFrameworkCore
             return groupedResults
                 .Skip(skip)
                 .Take(take)
-                .AsQueryable();
+                .ToList();
         }
 
         /// <summary>
@@ -163,15 +163,25 @@ namespace Mango.Specifications.EntityFrameworkCore
         /// <remarks>
         /// This method is used when no explicit selector is provided but projection is needed.
         /// It only copies simple properties and string properties, ignoring collections.
+        /// Each binding target is a writable <typeparamref name="TResult"/> property matched by name and type
+        /// to a readable <typeparamref name="T"/> property. Unmatched properties are silently skipped.
         /// </remarks>
         private Expression<Func<T, TResult>> CreateShallowSelector<T, TResult>()
             where T : class
         {
             var parameter = Expression.Parameter(typeof(T), "x");
-            var bindings = typeof(T)
+            var bindings = typeof(TResult)
                 .GetProperties()
-                .Where(p => !typeof(IEnumerable).IsAssignableFrom(p.PropertyType) || p.PropertyType == typeof(string))
-                .Select(p => Expression.Bind(p, Expression.Property(parameter, p)));
+                .Where(p => p.CanWrite &&
+                            (!typeof(IEnumerable).IsAssignableFrom(p.PropertyType) || p.PropertyType == typeof(string)))
+                .Select(resultProp =>
+                {
+                    var sourceProp = typeof(T).GetProperty(resultProp.Name);
+                    return sourceProp is not null && sourceProp.CanRead && sourceProp.PropertyType == resultProp.PropertyType
+                        ? Expression.Bind(resultProp, Expression.Property(parameter, sourceProp))
+                        : null;
+                })
+                .OfType<MemberBinding>();
 
             var memberInit = Expression.MemberInit(Expression.New(typeof(TResult)), bindings);
             return Expression.Lambda<Func<T, TResult>>(memberInit, parameter);

@@ -96,5 +96,26 @@ namespace Mango.Specifications.Tests
                 .Should()
                 .Be(expected);
         }
+        [Fact]
+        public void Evaluate_NoPagination_ShouldReturn_AllItems_Unchanged()
+        {
+            // Arrange
+            var customers = new[]
+            {
+                new Customer("Pepe", false),
+                new Customer("Pepa", true),
+                new Customer("Pepo", true)
+            };
+
+            // Skip and Take are both null — evaluator must return the original sequence untouched
+            var spec = new BasePaginationSpecification<Customer>();
+
+            // Act
+            var result = spec.Evaluate(customers).ToList();
+
+            // Assert — identity: all items returned in original order
+            result.Should().HaveCount(customers.Length);
+            result.Select(x => x.Name).Should().ContainInOrder(customers.Select(x => x.Name));
+        }
     }
 }
