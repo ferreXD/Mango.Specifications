@@ -154,7 +154,7 @@ namespace Mango.Specifications
             if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
 
             var orderedSpecificationBuilder = new OrderedSpecificationBuilder<T, TResult>(builder.Specification, !condition);
-            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderBy, condition);
+            return (IOrderedSpecificationBuilder<T, TResult>)orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderBy, condition);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Mango.Specifications
             if (builder.Specification.OrderByExpressions.Any()) builder.Specification.ClearOrdering();
 
             var orderedSpecificationBuilder = new OrderedSpecificationBuilder<T, TResult>(builder.Specification, !condition);
-            return orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderByDescending, condition);
+            return (IOrderedSpecificationBuilder<T, TResult>)orderedSpecificationBuilder.OrderByType(expression, OrderType.OrderByDescending, condition);
         }
 
         #endregion

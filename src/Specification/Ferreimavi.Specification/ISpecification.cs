@@ -13,6 +13,21 @@
         /// <summary>
         /// Gets the query builder for creating and modifying the specification query. Overrides the base query builder.
         /// </summary>
+        /// <remarks>
+        /// This member hides <see cref="ISpecification{T}.Query"/> via <see langword="new"/>.
+        /// If the instance is held as <c>ISpecification&lt;T&gt;</c>, the base property is
+        /// dispatched, returning <c>ISpecificationBuilder&lt;T&gt;</c> instead of
+        /// <c>ISpecificationBuilder&lt;T, TResult&gt;</c> — losing the projection builder.
+        /// <code>
+        /// ISpecification&lt;Order, OrderDto&gt; typed   = new MySpec();
+        /// ISpecification&lt;Order&gt;           untyped = typed;
+        ///
+        /// typed.Query   // ISpecificationBuilder&lt;Order, OrderDto&gt; — correct
+        /// untyped.Query // ISpecificationBuilder&lt;Order&gt;           — missing TResult builder
+        /// </code>
+        /// Always reference projectable specifications through
+        /// <c>ISpecification&lt;T, TResult&gt;</c>.
+        /// </remarks>
         new ISpecificationBuilder<T, TResult> Query { get; }
 
         /// <summary>
@@ -29,6 +44,23 @@
         /// <summary>
         /// Gets the action to perform on the entities after the query is executed. Overrides the base post-processing action.
         /// </summary>
+        /// <remarks>
+        /// This member hides <see cref="ISpecification{T}.PostProcessingAction"/> via
+        /// <see langword="new"/>.  If the instance is held as <c>ISpecification&lt;T&gt;</c>,
+        /// the base property is dispatched, returning
+        /// <c>Func&lt;IEnumerable&lt;T&gt;, IEnumerable&lt;T&gt;&gt;</c> instead of
+        /// <c>Func&lt;IEnumerable&lt;TResult&gt;, IEnumerable&lt;TResult&gt;&gt;</c> — the
+        /// result-typed transformation is silently lost.
+        /// <code>
+        /// ISpecification&lt;Order, OrderDto&gt; typed   = new MySpec();
+        /// ISpecification&lt;Order&gt;           untyped = typed;
+        ///
+        /// typed.PostProcessingAction   // Func&lt;IEnumerable&lt;OrderDto&gt;, ...&gt; — correct
+        /// untyped.PostProcessingAction // Func&lt;IEnumerable&lt;Order&gt;, ...&gt;    — wrong type, may be null
+        /// </code>
+        /// Always reference projectable specifications through
+        /// <c>ISpecification&lt;T, TResult&gt;</c>.
+        /// </remarks>
         new Func<IEnumerable<TResult>, IEnumerable<TResult>>? PostProcessingAction { get; }
 
         /// <summary>
@@ -36,6 +68,21 @@
         /// </summary>
         /// <param name="entities">The collection of entities to evaluate.</param>
         /// <returns>An enumerable of projected results.</returns>
+        /// <remarks>
+        /// This member hides <see cref="ISpecification{T}.Evaluate(IEnumerable{T})"/> via
+        /// <see langword="new"/>.  If the instance is held as <c>ISpecification&lt;T&gt;</c>
+        /// the base method is dispatched, returning <c>IEnumerable&lt;T&gt;</c> (unprojected)
+        /// instead of <c>IEnumerable&lt;TResult&gt;</c>.
+        /// <code>
+        /// ISpecification&lt;Order, OrderDto&gt; typed   = new MySpec();
+        /// ISpecification&lt;Order&gt;           untyped = typed;
+        ///
+        /// typed.Evaluate(orders)   // IEnumerable&lt;OrderDto&gt; — correct
+        /// untyped.Evaluate(orders) // IEnumerable&lt;Order&gt;   — silent wrong type
+        /// </code>
+        /// Always reference projectable specifications through
+        /// <c>ISpecification&lt;T, TResult&gt;</c>.
+        /// </remarks>
         new IEnumerable<TResult> Evaluate(IEnumerable<T> entities);
     }
 

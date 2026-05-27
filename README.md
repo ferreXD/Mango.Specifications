@@ -236,7 +236,20 @@ var mem = spec.Evaluate(inMemoryOrders).ToList();
 // Assert parity in tests (shape + count + key order)
 ```
 
-> If parity breaks, you're likely using an EF-only construct — move it behind a projection or adjust the expression.
+The in-memory evaluator applies `Where`, `OrderBy`, and `Skip`/`Take` only.
+The following features are **silently ignored** when evaluating in memory:
+
+| Feature | Reason |
+|---|---|
+| `Include` / `StringInclude` | Navigation loading is an EF Core concern |
+| `AsTracking` / `AsNoTracking` | Change-tracking has no in-memory meaning |
+| `AsNoTrackingWithIdentityResolution` | Same |
+| `AsSplitQuery` / `AsSingleQuery` | SQL-split strategy; not applicable |
+| `IgnoreQueryFilters` | EF global filters are not applied |
+| `TagWith` | SQL comment tags are EF-only |
+
+If your specification relies on any of these features, move the logic into a
+`Where` expression or a projection before testing in-memory.
 
 ---
 

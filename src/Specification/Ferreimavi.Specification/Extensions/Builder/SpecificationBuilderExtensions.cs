@@ -189,6 +189,46 @@ namespace Mango.Specifications
 
         #endregion
 
+        #region Tracking Extensions
+
+        /// <summary>
+        /// Specifies that entities should be tracked by the change tracker.
+        /// </summary>
+        public static ISpecificationBuilder<T> AsTracking<T>(this ISpecificationBuilder<T> builder) => AsTracking(builder, true);
+
+        /// <summary>
+        /// Conditionally specifies that entities should be tracked by the change tracker.
+        /// </summary>
+        public static ISpecificationBuilder<T> AsTracking<T>(this ISpecificationBuilder<T> builder, bool condition)
+        {
+            if (!condition) return builder;
+
+            builder.Specification.AsNoTracking = false;
+            builder.Specification.AsTracking = true;
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Specifies that entities should not be tracked by the change tracker.
+        /// </summary>
+        public static ISpecificationBuilder<T> AsNoTracking<T>(this ISpecificationBuilder<T> builder) => AsNoTracking(builder, true);
+
+        /// <summary>
+        /// Conditionally specifies that entities should not be tracked by the change tracker.
+        /// </summary>
+        public static ISpecificationBuilder<T> AsNoTracking<T>(this ISpecificationBuilder<T> builder, bool condition)
+        {
+            if (!condition) return builder;
+
+            builder.Specification.AsTracking = false;
+            builder.Specification.AsNoTracking = true;
+
+            return builder;
+        }
+
+        #endregion
+
         #region Pagination Extensions
 
         /// <summary>

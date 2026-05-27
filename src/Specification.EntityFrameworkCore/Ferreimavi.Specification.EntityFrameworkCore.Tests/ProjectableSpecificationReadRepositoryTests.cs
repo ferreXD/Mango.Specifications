@@ -1,7 +1,6 @@
 ﻿namespace Mango.Specifications.EntityFrameworkCore.Tests
 {
     using Examples.Specifications;
-    using Extensions;
     using FluentAssertions;
     using Helpers.Factories;
 

@@ -115,12 +115,12 @@ namespace Mango.Specifications.EntityFrameworkCore
             // TODO: If performance is a real concern in the future, consider using a custom implementation of GroupBy that does not materialize the query.
             // As of right now, we'll keep it this way, in order to avoid the 'unable to translate' exception. Problem is with pagination after grouping.
 
-            // Apply grouping: group the base query using the compiled GroupBySelector.
-            // For each group, project each element using the compiled GroupResultSelector.
-            // This yields an IEnumerable<IGrouping<TKey, TResult>>.
-            var groupedResults = await baseQuery
-                .GroupBy(specification.GroupBySelector, effectiveSelector)
-                .ToListAsync(cancellationToken);
+            // Materialize the base query first (WHERE/ORDER evaluators already applied).
+            // Then group in-memory so that no provider needs to translate IGrouping materialisation.
+            var materializedList = await baseQuery.ToListAsync(cancellationToken);
+            var groupedResults = materializedList
+                .GroupBy(specification.GroupBySelector!.Compile(), effectiveSelector!.Compile())
+                .ToList();
 
             // Apply pagination if specified.
             var skip = specification.Skip ?? 0;

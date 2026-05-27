@@ -6,6 +6,32 @@ namespace Mango.Specifications
     /// Default evaluator for specifications in memory.
     /// Evaluates specifications against in-memory collections using LINQ.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The default in-memory evaluator applies only <c>Where</c>, <c>OrderBy</c>, and
+    /// <c>Skip</c>/<c>Take</c>.  The following <see cref="ISpecification{T}"/> features
+    /// are <b>silently ignored</b> because they have no in-memory equivalent:
+    /// </para>
+    /// <list type="bullet">
+    ///   <item><term>Include / StringInclude</term><description>Navigation-property eager
+    ///     loading is performed by EF Core, not by LINQ-to-objects.</description></item>
+    ///   <item><term>AsTracking / AsNoTracking</term><description>Change-tracking is an
+    ///     EF Core concept; in-memory collections are not tracked.</description></item>
+    ///   <item><term>AsNoTrackingWithIdentityResolution</term><description>Same as
+    ///     above.</description></item>
+    ///   <item><term>AsSplitQuery / AsSingleQuery</term><description>SQL query-split
+    ///     strategy; has no meaning for in-memory evaluation.</description></item>
+    ///   <item><term>IgnoreQueryFilters</term><description>EF Core global query filters
+    ///     are not applied during in-memory evaluation.</description></item>
+    ///   <item><term>TagWith</term><description>SQL comment tags are emitted by EF Core
+    ///     and have no effect in-memory.</description></item>
+    /// </list>
+    /// <para>
+    /// To support additional features, pass a custom evaluator list to the
+    /// <see cref="InMemorySpecificationEvaluator(IEnumerable{IInMemoryEvaluator})"/>
+    /// constructor.
+    /// </para>
+    /// </remarks>
     public class InMemorySpecificationEvaluator : IInMemorySpecificationEvaluator
     {
         // Maintain the common evaluators in a static readonly array to avoid recreating them

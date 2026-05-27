@@ -17,14 +17,7 @@ namespace Mango.Specifications.EntityFrameworkCore
 
         /// <summary>Conditionally specifies that entities should be tracked by the EF Core change tracker.</summary>
         public static ISpecificationBuilder<T> AsTracking<T>(this ISpecificationBuilder<T> builder, bool condition)
-        {
-            if (!condition) return builder;
-
-            builder.Specification.AsNoTracking = false;
-            builder.Specification.AsTracking = true;
-
-            return builder;
-        }
+            => SpecificationBuilderExtensions.AsTracking(builder, condition);
 
         /// <summary>Specifies that entities should not be tracked by the EF Core change tracker.</summary>
         public static ISpecificationBuilder<T> AsNoTracking<T>(this ISpecificationBuilder<T> builder)
@@ -32,14 +25,7 @@ namespace Mango.Specifications.EntityFrameworkCore
 
         /// <summary>Conditionally specifies that entities should not be tracked by the EF Core change tracker.</summary>
         public static ISpecificationBuilder<T> AsNoTracking<T>(this ISpecificationBuilder<T> builder, bool condition)
-        {
-            if (!condition) return builder;
-
-            builder.Specification.AsTracking = false;
-            builder.Specification.AsNoTracking = true;
-
-            return builder;
-        }
+            => SpecificationBuilderExtensions.AsNoTracking(builder, condition);
 
         #endregion
 
