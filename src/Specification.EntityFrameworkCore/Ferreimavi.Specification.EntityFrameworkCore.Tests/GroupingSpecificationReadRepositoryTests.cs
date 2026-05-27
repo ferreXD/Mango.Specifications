@@ -1,13 +1,14 @@
-﻿namespace Mango.Specifications.EntityFrameworkCore.Tests
+namespace Mango.Specifications.EntityFrameworkCore.Tests
 {
     using Examples.Specifications;
     using FluentAssertions;
+    using Helpers.Attributes;
     using Helpers.Factories;
 
     [Trait("Category", "Integration")]
     public class GroupingSpecificationReadRepositoryTests
     {
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(3)]
         [InlineData(5)]
@@ -32,7 +33,7 @@
                 .AllSatisfy(x => x.Gender.Should().Be("M"));
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(3)]
         [InlineData(5)]
@@ -67,7 +68,7 @@
         }
 
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(5)]
@@ -88,7 +89,7 @@
                 .ThrowAsync<InvalidOperationException>();
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(2)]
         public async Task ListAsync_ShouldReturn_GroupedBy_PersonType(int count)
@@ -113,7 +114,7 @@
                 .Be(count);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(10)]
         [InlineData(25)]
         [InlineData(50)]
@@ -134,7 +135,7 @@
                 .Be(1);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(10)]
         [InlineData(25)]
         [InlineData(50)]

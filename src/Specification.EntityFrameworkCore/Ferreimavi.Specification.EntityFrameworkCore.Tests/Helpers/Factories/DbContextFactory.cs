@@ -5,12 +5,17 @@
 
     internal static class DbContextFactory
     {
+        internal const string ConnectionStringEnvVar = "MANGO_TEST_CONNECTION_STRING";
+
         public static TestDbContext CreateTestDbContext()
         {
-            var options = new DbContextOptionsBuilder<TestDbContext>().Options;
-            var context = new TestDbContext(options);
+            var connectionString = Environment.GetEnvironmentVariable(ConnectionStringEnvVar)!;
 
-            return context;
+            var options = new DbContextOptionsBuilder<TestDbContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            return new TestDbContext(options);
         }
     }
 }

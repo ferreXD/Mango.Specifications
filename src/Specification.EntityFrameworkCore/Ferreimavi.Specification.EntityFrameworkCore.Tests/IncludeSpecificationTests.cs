@@ -1,15 +1,16 @@
-﻿namespace Mango.Specifications.EntityFrameworkCore.Tests
+namespace Mango.Specifications.EntityFrameworkCore.Tests
 {
     using Data;
     using Examples.Specifications;
     using FluentAssertions;
+    using Helpers.Attributes;
     using Helpers.Factories;
     using Microsoft.EntityFrameworkCore;
 
     [Trait("Category", "Integration")]
     public class IncludeSpecificationTests
     {
-        [Fact]
+        [IntegrationFact]
         public async Task Evaluate_ShouldInclude_PersonEntity()
         {
             // Arrange
@@ -42,7 +43,7 @@
                 .BeEquivalentTo(expected!.BusinessEntity);
         }
 
-        [Fact]
+        [IntegrationFact]
         public async Task Evaluate_ShouldThenInclude_DepartmentEntity()
         {
             // Arrange
@@ -73,7 +74,7 @@
                 .AllSatisfy(x => x.Should().NotBeNull());
         }
 
-        [Fact]
+        [IntegrationFact]
         public async Task Evaluate_ShouldInclude_WhenGrouping_EmployeeEntity()
         {
             // Arrange

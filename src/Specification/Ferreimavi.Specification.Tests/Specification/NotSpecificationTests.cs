@@ -81,7 +81,7 @@ namespace Mango.Specifications.Tests
             var customers = new[]
             {
                 new Customer("John Doe", true),
-                new Customer("Jane Doe", false),
+                new Customer("Jane Doe", true),
                 new Customer("John Connor", true)
             };
 

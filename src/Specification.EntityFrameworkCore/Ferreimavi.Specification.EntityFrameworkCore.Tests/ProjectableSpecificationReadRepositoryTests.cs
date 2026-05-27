@@ -1,13 +1,14 @@
-﻿namespace Mango.Specifications.EntityFrameworkCore.Tests
+namespace Mango.Specifications.EntityFrameworkCore.Tests
 {
     using Examples.Specifications;
     using FluentAssertions;
+    using Helpers.Attributes;
     using Helpers.Factories;
 
     [Trait("Category", "Integration")]
     public class ProjectableSpecificationReadRepositoryTests
     {
-        [Fact]
+        [IntegrationFact]
         public async Task FirstOrDefaultAsync_WithProjectableSpecification_ReturnsProjectedResult()
         {
             // Arrange
@@ -34,7 +35,7 @@
         }
 
 
-        [Fact]
+        [IntegrationFact]
         public async Task SingleOrDefaultAsync_WithProjectableSpecification_ReturnsProjectedResult()
         {
             // Arrange
@@ -60,7 +61,7 @@
                 .NotBeNullOrWhiteSpace();
         }
 
-        [Fact]
+        [IntegrationFact]
         public async Task SingleOrDefaultAsync_WithProjectableSpecification_ThrowsException()
         {
             // Arrange
@@ -78,7 +79,7 @@
                 .ThrowAsync<InvalidOperationException>();
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(3)]
         [InlineData(5)]
@@ -108,7 +109,7 @@
                 .Be(count);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(3)]
         [InlineData(5)]
@@ -130,7 +131,7 @@
         }
 
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(0, false)]
         [InlineData(1, true)]
         [InlineData(3, true)]
@@ -152,7 +153,7 @@
                 .Be(expected);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(3)]
         [InlineData(5)]
@@ -184,7 +185,7 @@
             }
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(10)]
         [InlineData(50)]

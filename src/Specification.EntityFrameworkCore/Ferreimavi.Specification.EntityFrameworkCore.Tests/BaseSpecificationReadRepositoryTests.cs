@@ -3,12 +3,13 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
     using Data;
     using Examples.Specifications;
     using FluentAssertions;
+    using Helpers.Attributes;
     using Helpers.Factories;
 
     [Trait("Category", "Integration")]
     public class BaseSpecificationReadRepositoryTests
     {
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(10)]
         [InlineData(100)]
@@ -36,7 +37,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .Match<Person>(x => x.BusinessEntityId == id);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(10)]
         [InlineData(25)]
         [InlineData(50)]
@@ -65,7 +66,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .Match<Employee>(x => x.Gender == "F");
         }
 
-        [Fact]
+        [IntegrationFact]
         public async Task SingleOrDefaultAsync_ShouldReturn_Female_Employee()
         {
             // Arrange
@@ -92,7 +93,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
         }
 
 
-        [Fact]
+        [IntegrationFact]
         public async Task SingleOrDefaultAsync_Should_ThrowException()
         {
             // Arrange
@@ -110,7 +111,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .ThrowAsync<InvalidOperationException>();
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(10)]
         [InlineData(25)]
         [InlineData(50)]
@@ -140,7 +141,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .AllSatisfy(x => x.Gender.Should().Be("F"));
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(10)]
         [InlineData(25)]
         [InlineData(50)]
@@ -161,7 +162,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .Be(count);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(10)]
         [InlineData(25)]
         [InlineData(50)]
@@ -182,7 +183,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .Be(true);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(3)]
         [InlineData(5)]
@@ -214,7 +215,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
             }
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(10)]
         [InlineData(50)]
@@ -242,7 +243,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .Be(count);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(10)]
         [InlineData(50)]
@@ -270,7 +271,7 @@ namespace Mango.Specifications.EntityFrameworkCore.Tests
                 .Be(count);
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(1)]
         [InlineData(10)]
         [InlineData(50)]

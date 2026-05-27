@@ -1,14 +1,15 @@
-﻿namespace Mango.Specifications.EntityFrameworkCore.Tests
+namespace Mango.Specifications.EntityFrameworkCore.Tests
 {
     using Data;
     using Examples.Specifications;
     using FluentAssertions;
+    using Helpers.Attributes;
     using Helpers.Factories;
 
     [Trait("Category", "Integration")]
     public class ComposableSpecificationReadRepositoryTests
     {
-        [Fact]
+        [IntegrationFact]
         public async Task ListAsync_Should_Evaluate_ComposedAndSpecification()
         {
             // Arrange
@@ -33,7 +34,7 @@
                 .AllSatisfy(x => x.Gender.Should().Be("M"));
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(5)]
         [InlineData(10)]
         [InlineData(15)]
@@ -64,7 +65,7 @@
         }
 
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(5, 15)]
         [InlineData(10, 20)]
         [InlineData(15, 25)]
@@ -102,7 +103,7 @@
                 .OnlyContain(x => x.Gender == "F" || (x.HireDate <= lowerEndSeniorityDateTime && x.HireDate >= upperEndSeniorityDateTime));
         }
 
-        [Fact]
+        [IntegrationFact]
         public async Task ListAsync_Should_Evaluate_ComposableProjectableSpecification()
         {
             // Arrange
@@ -130,7 +131,7 @@
                 .AllSatisfy(x => x.Should().Contain("-"));
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(0, 5, 10, 15)]
         [InlineData(5, 10, 15, 20)]
         [InlineData(10, 15, 20, 25)]
@@ -187,7 +188,7 @@
                 );
         }
 
-        [Theory]
+        [IntegrationTheory]
         [InlineData(0, 5, 10, 15)]
         [InlineData(5, 10, 15, 20)]
         [InlineData(10, 15, 20, 25)]
