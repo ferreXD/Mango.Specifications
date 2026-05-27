@@ -36,9 +36,10 @@
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString =
-                Environment.GetEnvironmentVariable("MANGO_TEST_CONNECTION_STRING")
-                ?? "Data Source=DESKTOP-SB85G0U;Initial Catalog=AdventureWorks2022;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;";
+            if (optionsBuilder.IsConfigured) return;
+
+            var connectionString = Environment.GetEnvironmentVariable("MANGO_TEST_CONNECTION_STRING");
+            if (string.IsNullOrWhiteSpace(connectionString)) return;
 
             optionsBuilder.UseSqlServer(connectionString);
         }

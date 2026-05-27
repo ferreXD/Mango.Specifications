@@ -1,4 +1,4 @@
-﻿namespace Mango.Specifications.EntityFrameworkCore.Extensions
+﻿namespace Mango.Specifications.EntityFrameworkCore
 {
     using Microsoft.EntityFrameworkCore;
 

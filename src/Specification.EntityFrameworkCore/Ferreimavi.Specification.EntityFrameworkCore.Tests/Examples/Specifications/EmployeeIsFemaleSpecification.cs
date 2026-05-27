@@ -1,7 +1,7 @@
 ﻿namespace Mango.Specifications.EntityFrameworkCore.Tests.Examples.Specifications
 {
     using Data;
-    using Mango.Specifications.EntityFrameworkCore.Extensions;
+    using Mango.Specifications.EntityFrameworkCore;
 
     internal class EmployeeIsFemaleSpecification : Specification<Employee>
     {

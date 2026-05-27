@@ -1,6 +1,4 @@
-// ReSharper disable once CheckNamespace
-
-namespace Mango.Specifications.EntityFrameworkCore.Extensions
+namespace Mango.Specifications.EntityFrameworkCore
 {
     using Mango.Specifications;
 

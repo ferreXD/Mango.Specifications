@@ -25,6 +25,7 @@
 - [EF Toggles](#ef-toggles)
 - [In-Memory vs EF Parity](#in-memory-vs-ef-parity)
 - [Documentation](#documentation)
+- [Known Limitations](#known-limitations)
 - [Building](#building)
 - [Running Tests](#running-tests)
 - [Roadmap](#roadmap)
@@ -236,6 +237,26 @@ var mem = spec.Evaluate(inMemoryOrders).ToList();
 ```
 
 > If parity breaks, you're likely using an EF-only construct — move it behind a projection or adjust the expression.
+
+---
+
+## Known Limitations
+
+### GroupBy — full in-memory materialization before pagination
+
+When `Skip`/`Take` are set on a `GroupingSpecification<T,TKey,TResult>`, the **in-memory evaluator** materialises **all** matching groups into a list first, then applies the offset and limit over that list.
+
+```
+entities → Where → GroupBy → Select → ToList() → Skip/Take
+                                       ^^^^^^^^
+                                       full materialization here
+```
+
+**Impact:** for large collections this can cause significant memory pressure and negate the purpose of pagination.
+
+**EF Core is unaffected** — the database engine emits `OFFSET`/`FETCH` and no in-process buffering occurs.
+
+**Workaround:** when testing grouping specs with pagination, keep the seed data small. If you need server-side cursor pagination over grouped results, issue a separate `COUNT` query and page the raw entity query before grouping.
 
 ---
 

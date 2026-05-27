@@ -8,6 +8,20 @@ namespace Mango.Specifications
     /// <typeparam name="T">The type of the entity.</typeparam>
     /// <typeparam name="TKey">The type of the key used for grouping.</typeparam>
     /// <typeparam name="TResult">The type of the result of grouping.</typeparam>
+    /// <remarks>
+    /// <para>
+    /// <b>In-memory pagination caveat:</b> when <see cref="Specification{T}.Skip"/> or
+    /// <see cref="Specification{T}.Take"/> are set, the in-memory evaluator first materializes
+    /// <em>all</em> matching groups into a <see cref="List{T}"/> and then applies
+    /// <c>Skip</c>/<c>Take</c> over that list. For large data sets this can cause significant
+    /// memory pressure. Apply <c>Skip</c>/<c>Take</c> to grouping specs in tests only with
+    /// data sets small enough to fit comfortably in memory.
+    /// </para>
+    /// <para>
+    /// This behaviour does <b>not</b> affect EF Core queries — the SQL <c>OFFSET</c>/<c>FETCH</c>
+    /// clause is emitted by the database engine and no in-process materialization occurs.
+    /// </para>
+    /// </remarks>
     public class GroupingSpecification<T, TKey, TResult> : Specification<T>, IGroupingSpecification<T, TKey, TResult>
     {
         /// <summary>
